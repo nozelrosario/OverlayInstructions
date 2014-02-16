@@ -3,6 +3,38 @@
 	background-image: url('arrowImages/arrow-NW.png');
 }
 
+.InstructionBlock.ChalkBoard .ArrowImage_N {
+	background-image: url('arrowImages/arrow-NW.png');
+}
+
+.InstructionBlock.ChalkBoard .ArrowImage_NE {
+	background-image: url('arrowImages/arrow-NW.png');
+}
+
+.InstructionBlock.ChalkBoard .ArrowImage_E {
+	background-image: url('arrowImages/arrow-NW.png');
+}
+
+.InstructionBlock.ChalkBoard .ArrowImage_SE {
+	background-image: url('arrowImages/arrow-NW.png');
+}
+
+.InstructionBlock.ChalkBoard .ArrowImage_S {
+	background-image: url('arrowImages/arrow-NW.png');
+}
+
+.InstructionBlock.ChalkBoard .ArrowImage_SW {
+	background-image: url('arrowImages/arrow-NW.png');
+}
+
+.InstructionBlock.ChalkBoard .ArrowImage_W {
+	background-image: url('arrowImages/arrow-NW.png');
+}
+
+
+
+
+
 .InstructionBlock.ChalkBoard .ArrowImage 
 {
 float:left;

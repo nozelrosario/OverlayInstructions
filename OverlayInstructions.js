@@ -15,6 +15,9 @@ OverlayInstructions = function (ID,InstructionString,InstructionDetailsString,ta
 		} else {
 			this.autoSetArrowPosition();
 		}
+		
+		this.hideUnWantedCells();
+		
 		if(posX && posY){
 			this.setPosition(posX,posY);
 		} else {
@@ -98,9 +101,9 @@ OverlayInstructions.prototype.getOverlay = function() {
 };
 
 OverlayInstructions.prototype.createOverlay = function () {
-	var overlay = $('#InstructionsOverlay');
+	var overlay = $('#InstructionsOverlay_' + this.ControlID);
 	if(overlay.length <= 0) { 
-		overlay = $( '<div class="InstructionsOverlay" id="InstructionsOverlay" style="display:none"></div>' );
+		overlay = $( '<div class="InstructionsOverlay" id="InstructionsOverlay_' + this.ControlID +'" style="display:none; height:'+ $(document).height() + 'px; width:' + $(document).width() + 'px;"></div>' );
 		$( "body" ).append(overlay);	
 	}
 	this.InstructionOverlay = overlay;
@@ -304,9 +307,9 @@ OverlayInstructions.prototype.calculateInstructionBlockCoOrdinates = function(ar
 			break;
 
 		case "NE": 
-			instructionBlockX = targetElementPositionX1 - this.deltaX;
+			instructionBlockX = targetElementPositionX1 - ( horizontal_InstructionBlockWidth + this.deltaX );
 			instructionBlockY = targetElementPositionY1  + this.deltaY;
-			arrowImageRotationAngle = 120;
+			arrowImageRotationAngle = 140;
 			break;//done
 
 		case "E": 
@@ -317,7 +320,7 @@ OverlayInstructions.prototype.calculateInstructionBlockCoOrdinates = function(ar
 			
 
 		case "SE": 
-			instructionBlockX = targetElementPositionX1 - ( vertical_InstructionBlockWidth + this.deltaX );
+			instructionBlockX = targetElementPositionX1 - targetElementWidth - ( vertical_InstructionBlockWidth + this.deltaX );
 			instructionBlockY = targetElementPositionY1 - ( vertical_InstructionBlockHeight + this.deltaY );
 			arrowImageRotationAngle = 220;
 			break;//done
@@ -330,8 +333,8 @@ OverlayInstructions.prototype.calculateInstructionBlockCoOrdinates = function(ar
 
 		case "SW": 
 			instructionBlockX = targetElementPositionX2 + this.deltaX ;
-			instructionBlockY = ((targetElementPositionY1 +((targetElementPositionY2 - targetElementPositionY1)/2)) + this.deltaY) - vertical_InstructionBlockHeight;
-			arrowImageRotationAngle = 300;
+			instructionBlockY = ((targetElementPositionY1 +((targetElementPositionY2 - targetElementPositionY1)/2)) + this.deltaY) - (vertical_InstructionBlockHeight);
+			arrowImageRotationAngle = 330;
 			break;//done
 
 		case "W": 
@@ -362,6 +365,46 @@ OverlayInstructions.prototype.autoSetInstructionBlockPosition = function(){
 	this.autoSetArrowPosition();
 	this.calculateInstructionBlockCoOrdinates(this.arrowPosition);
 	this.setPosition(this.posX,this.posY);
+};
+
+OverlayInstructions.prototype.hideUnWantedCells = function() {
+	if(this.arrowPosition.indexOf("S") != -1){
+		// hide 1st row TopRow_
+		$('#TopRow_'+ this.ControlID).hide();
+	} else if(this.arrowPosition.indexOf("E") != -1) {
+		//hide 1st column Cell-NW_inst1,Cell-W_inst1,Cell-SW_inst1
+		$('#Cell-NW_'+ this.ControlID).hide();
+		$('#Cell-W_'+ this.ControlID).hide();
+		$('#Cell-SW_'+ this.ControlID).hide();
+	}
+	
+
+	// instruction block dimensions
+	var instructionContenElement = $('#' + 'Cell-C_'+ this.ControlID);
+	var instructionContentHeight = instructionContenElement.actual('height');
+	var instructionContentWidth = instructionContenElement.actual('width');
+
+	// resultant Horizontal & Vertical height-width of instruction block
+	var horizontal_InstructionBlockHeight,horizontal_InstructionBlockWidth;
+	horizontal_InstructionBlockHeight = (this.arrowImageHeight > instructionContentHeight)?this.arrowImageHeight:instructionContentHeight;
+	horizontal_InstructionBlockWidth = this.arrowImageWidth + instructionContentWidth;
+
+	var vertical_InstructionBlockHeight,vertical_InstructionBlockWidth;
+	vertical_InstructionBlockHeight = this.arrowImageHeight + instructionContentHeight;
+	vertical_InstructionBlockWidth = (this.arrowImageWidth > instructionContentWidth)?this.arrowImageWidth:instructionContentWidth;
+
+	var CurrentArrowElement,ArrowElementPositionX, ArrowElementPositionY;
+	CurrentArrowElement = $('#ArrowImage_' + this.arrowPosition + '_Div_' + this.ControlID);
+	CurrentArrowElement.css("position","absolute");
+	if(this.arrowPosition=="SW"){
+		CurrentArrowElement.css("left",0);
+		CurrentArrowElement.css("top",instructionContentHeight - (this.targetElement.getHeight()) + this.deltaY);
+		
+	} else if(this.arrowPosition=="SE"){
+		//ArrowElementPositionX = instructionContentWidth + this.deltaX;
+		CurrentArrowElement.css("top",instructionContentHeight - (this.targetElement.getHeight()) + this.deltaY);
+	}
+
 };
 
 OverlayInstructions.prototype.setPosition = function (positionX,positionY) {
