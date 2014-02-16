@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="style/OverlayInstructions.css">
+<link rel="stylesheet" href="style/ChalkBoard.css">
+<script type="text/javascript" src="jquery-2.0.3.js"></script>
+<script type="text/javascript" src="jquery-plugins.js"></script>
+<script type="text/javascript" src="OverlayInstructions.js"></script>
+<script>
+function showInstruction() {
+	inst1.show();
+}
+
+</script>
+</head>
+<body>
+<form id="form1" class="InstructionBlock ChalkBoard">
+First name: <input type="text" name="firstname" id="input1"><br>
+Last name: <input type="text" name="lastname">
+<a class="InstructionOKButton " onclick="showInstruction();">OK</a>
+</form>
+
+<script type="text/javascript">var inst1 = new OverlayInstructions("inst1","Click here to view Notifications","<br/> Notifications on New Messages <br/> Even on New Tasks","input1","");</script>
+</body>
+</html>

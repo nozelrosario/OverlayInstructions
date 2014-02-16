@@ -1,0 +1,51 @@
+
+.InstructionBlock.ChalkBoard .ArrowImage_NW {
+	background-image: url('arrowImages/arrow-NW.png');
+}
+
+.InstructionBlock.ChalkBoard .ArrowImage 
+{
+float:left;
+clear:right; 
+margin-top:10px;
+background-size: contain;
+background-repeat: no-repeat;
+}
+
+.InstructionBlock.ChalkBoard .InstructionText 
+{
+float:left;
+margin-left:10px;
+color:white; 
+font-family:cursive;
+font-size: 12pt;
+}
+
+.InstructionBlock.ChalkBoard .InstructionOKButton {
+margin:15px 0px 15px 15px;
+display: inline-block;
+line-height: 28px;
+padding: 0 12px;
+-webkit-border-radius: 2px;
+border-radius: 2px;
+border: 1px solid #4285f4;
+font-weight: bold;
+outline: none;
+background: #4285f4;
+background: -webkit-linear-gradient(top,#4387fd,#4683ea);
+background: linear-gradient(top,#4387fd,#4683ea);
+filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#4387fd,endColorstr=#4683ea,GradientType=0);
+color: #fff;
+float: right;
+clear: left;
+cursor: pointer;
+}
+
+
+.InstructionBlock.ChalkBoard .InstructionDetailText {
+float:left;
+margin-left:10px;
+color:white; 
+font-family:cursive;
+font-size: 10pt;
+}
