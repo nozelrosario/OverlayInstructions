@@ -314,7 +314,7 @@ OverlayInstructions.prototype.calculateInstructionBlockCoOrdinates = function(ar
 
 		case "E": 
 			instructionBlockX = targetElementPositionX1 - ( horizontal_InstructionBlockWidth + this.deltaX );
-			instructionBlockY = ((targetElementPositionY1 + ((targetElementPositionY2 - targetElementPositionY1)/2)) + this.deltaY) - (horizontal_InstructionBlockHeight/2);
+			instructionBlockY = ((targetElementPositionY1 + ((targetElementPositionY2 - targetElementPositionY1)/2)) - this.deltaY) - ((horizontal_InstructionBlockHeight - (this.deltaX*2))/2);
 			arrowImageRotationAngle = 180;
 			break; //done
 			
@@ -328,8 +328,9 @@ OverlayInstructions.prototype.calculateInstructionBlockCoOrdinates = function(ar
 		case "S":
 			instructionBlockX = (targetElementPositionX1 + ((targetElementPositionX2 - targetElementPositionX1)/2)) - ((vertical_InstructionBlockWidth/2) + this.deltaX);
 			instructionBlockY = targetElementPositionY1 - ( vertical_InstructionBlockHeight + this.deltaY );
-			break;//done
 			arrowImageRotationAngle = 270;
+			break;//done
+			
 
 		case "SW": 
 			instructionBlockX = targetElementPositionX2 + this.deltaX ;
@@ -339,7 +340,7 @@ OverlayInstructions.prototype.calculateInstructionBlockCoOrdinates = function(ar
 
 		case "W": 
 			instructionBlockX = targetElementPositionX2 + this.deltaX ;
-			instructionBlockY = ((targetElementPositionY1 +((targetElementPositionY2 - targetElementPositionY1)/2)) + this.deltaY) - (horizontal_InstructionBlockHeight/2);
+			instructionBlockY = ((targetElementPositionY1 +((targetElementPositionY2 - targetElementPositionY1)/2)) + this.deltaY) - ((horizontal_InstructionBlockHeight - (this.deltaX*2))/2);
 			arrowImageRotationAngle = 0;
 			break;//done
 
@@ -355,8 +356,8 @@ OverlayInstructions.prototype.calculateInstructionBlockCoOrdinates = function(ar
 		arrowImageRotationAngle = 0;
 	}
 
-	this.posX = instructionBlockX;
-	this.posY = instructionBlockY;
+	this.posX = (instructionBlockX<0)?0:instructionBlockX;
+	this.posY = (instructionBlockY<0)?0:instructionBlockY;
 	this.arrowImageRotationAngle = arrowImageRotationAngle;
 
 };
@@ -368,10 +369,11 @@ OverlayInstructions.prototype.autoSetInstructionBlockPosition = function(){
 };
 
 OverlayInstructions.prototype.hideUnWantedCells = function() {
-	if(this.arrowPosition.indexOf("S") != -1){
+	if((this.arrowPosition.indexOf("S") != -1) || this.arrowPosition == "W" || this.arrowPosition == "E" ){
 		// hide 1st row TopRow_
 		$('#TopRow_'+ this.ControlID).hide();
-	} else if(this.arrowPosition.indexOf("E") != -1) {
+	} 
+	if(this.arrowPosition.indexOf("E") != -1) {
 		//hide 1st column Cell-NW_inst1,Cell-W_inst1,Cell-SW_inst1
 		$('#Cell-NW_'+ this.ControlID).hide();
 		$('#Cell-W_'+ this.ControlID).hide();
