@@ -60,6 +60,9 @@ OverlayInstructions.prototype.arrowStyles= {
 };
 OverlayInstructions.prototype.InstructionText="";
 OverlayInstructions.prototype.InstructionDetailsText="";
+OverlayInstructions.prototype.events= {
+		"onOkClick":true
+};
 
 OverlayInstructions.prototype.ToggleMoreDetail = function (eventData) {
 	var OverlayInstructionObj = eventData.data.OverlayInstructionObj;
@@ -69,18 +72,35 @@ OverlayInstructions.prototype.ToggleMoreDetail = function (eventData) {
 	} else {
 		$("#MoreDetailButton_" + OverlayInstructionObj.ControlID).text("less...");
 	}
-	$("#MoreInstructionDetail_"+ OverlayInstructionObj.ControlID).toggle("fast");
-
+	$("#MoreInstructionDetail_"+ OverlayInstructionObj.ControlID).toggle("fast",function() {
+		OverlayInstructionObj.calculateInstructionBlockCoOrdinates(OverlayInstructionObj.arrowPosition);
+		OverlayInstructionObj.setPosition(OverlayInstructionObj.posX,OverlayInstructionObj.posY);
+	});
+	
 };
 
 OverlayInstructions.prototype.OnInstructionOKButtonClick = function (eventData) {
 	var OverlayInstructionObj = eventData.data.OverlayInstructionObj;
 	OverlayInstructionObj.hide();
+	OverlayInstructionObj.fireEvent("onOkClick");
 	//detach event handlers
 	//remove instruction block
 	//remove overlay
 	//destroy
 };
+
+OverlayInstructions.prototype.addListener = function (event,handler) {
+	if(this.events[event]) {
+		this.events[event] = handler;
+	}
+};
+
+OverlayInstructions.prototype.fireEvent = function (event,eventData) {
+	if(typeof this.events[event] === 'function') {
+		this.events[event].apply(this,eventData);
+	}	
+};
+
 
 OverlayInstructions.prototype.hideOverlay = function () {
 	var overlay = this.getOverlay();
@@ -90,6 +110,10 @@ OverlayInstructions.prototype.hideOverlay = function () {
 OverlayInstructions.prototype.showOverlay = function () {
 	var overlay = this.getOverlay();
 	overlay.show();
+};
+
+OverlayInstructions.prototype.getID = function () {
+	return this.ControlID;
 };
 
 OverlayInstructions.prototype.getOverlay = function() {
@@ -266,6 +290,7 @@ OverlayInstructions.prototype.autoSetArrowPosition = function() {
 	}	
 };
 
+
 OverlayInstructions.prototype.calculateInstructionBlockCoOrdinates = function(arrowPosition) {
 	if(this.isValidArrowPosition(arrowPosition)){
 		var instructionBlockX,instructionBlockY,arrowImageRotationAngle;
@@ -320,27 +345,27 @@ OverlayInstructions.prototype.calculateInstructionBlockCoOrdinates = function(ar
 			
 
 		case "SE": 
-			instructionBlockX = targetElementPositionX1 - targetElementWidth - ( vertical_InstructionBlockWidth + this.deltaX );
+			instructionBlockX = targetElementPositionX1 - (targetElementWidth/2) - ( vertical_InstructionBlockWidth + this.deltaX );
 			instructionBlockY = targetElementPositionY1 - ( vertical_InstructionBlockHeight + this.deltaY );
 			arrowImageRotationAngle = 220;
 			break;//done
 
 		case "S":
 			instructionBlockX = (targetElementPositionX1 + ((targetElementPositionX2 - targetElementPositionX1)/2)) - ((vertical_InstructionBlockWidth/2) + this.deltaX);
-			instructionBlockY = targetElementPositionY1 - ( vertical_InstructionBlockHeight + this.deltaY );
+			instructionBlockY = targetElementPositionY1 - ( vertical_InstructionBlockHeight + targetElementHeight + this.deltaY );
 			arrowImageRotationAngle = 270;
 			break;//done
 			
 
 		case "SW": 
 			instructionBlockX = targetElementPositionX2 + this.deltaX ;
-			instructionBlockY = ((targetElementPositionY1 +((targetElementPositionY2 - targetElementPositionY1)/2)) + this.deltaY) - (vertical_InstructionBlockHeight);
+			instructionBlockY = (targetElementPositionY1 + this.deltaY) - (vertical_InstructionBlockHeight);
 			arrowImageRotationAngle = 330;
 			break;//done
 
 		case "W": 
 			instructionBlockX = targetElementPositionX2 + this.deltaX ;
-			instructionBlockY = ((targetElementPositionY1 +((targetElementPositionY2 - targetElementPositionY1)/2)) + this.deltaY) - ((horizontal_InstructionBlockHeight - (this.deltaX*2))/2);
+			instructionBlockY = ((targetElementPositionY1 ) + this.deltaY) - ((horizontal_InstructionBlockHeight - (this.deltaX*2))/2);
 			arrowImageRotationAngle = 0;
 			break;//done
 
@@ -380,33 +405,6 @@ OverlayInstructions.prototype.hideUnWantedCells = function() {
 		$('#Cell-SW_'+ this.ControlID).hide();
 	}
 	
-
-	// instruction block dimensions
-	var instructionContenElement = $('#' + 'Cell-C_'+ this.ControlID);
-	var instructionContentHeight = instructionContenElement.actual('height');
-	var instructionContentWidth = instructionContenElement.actual('width');
-
-	// resultant Horizontal & Vertical height-width of instruction block
-	var horizontal_InstructionBlockHeight,horizontal_InstructionBlockWidth;
-	horizontal_InstructionBlockHeight = (this.arrowImageHeight > instructionContentHeight)?this.arrowImageHeight:instructionContentHeight;
-	horizontal_InstructionBlockWidth = this.arrowImageWidth + instructionContentWidth;
-
-	var vertical_InstructionBlockHeight,vertical_InstructionBlockWidth;
-	vertical_InstructionBlockHeight = this.arrowImageHeight + instructionContentHeight;
-	vertical_InstructionBlockWidth = (this.arrowImageWidth > instructionContentWidth)?this.arrowImageWidth:instructionContentWidth;
-
-	var CurrentArrowElement,ArrowElementPositionX, ArrowElementPositionY;
-	CurrentArrowElement = $('#ArrowImage_' + this.arrowPosition + '_Div_' + this.ControlID);
-	CurrentArrowElement.css("position","absolute");
-	if(this.arrowPosition=="SW"){
-		CurrentArrowElement.css("left",0);
-		CurrentArrowElement.css("top",instructionContentHeight - (this.targetElement.getHeight()) + this.deltaY);
-		
-	} else if(this.arrowPosition=="SE"){
-		//ArrowElementPositionX = instructionContentWidth + this.deltaX;
-		CurrentArrowElement.css("top",instructionContentHeight - (this.targetElement.getHeight()) + this.deltaY);
-	}
-
 };
 
 OverlayInstructions.prototype.setPosition = function (positionX,positionY) {
@@ -526,14 +524,14 @@ OverlayInstructions.prototype.createInstructionBlockElement = function () {
 	var InstructionBlockBottomRow = $('<tr id="BottomRow_'+ this.ControlID +'"></tr>');
 
 	//Arrow Images
-	var InstructionArrowImageNW = $('<td id="Cell-NW_' + this.ControlID + '" class="ArrowImageCell" style="visibility:hidden"><div class="ArrowImage ArrowImage_NW" id="ArrowImage_NW_Div_' + this.ControlID + '" style="height:' + this.arrowImageHeight + 'px;width:'+ this.arrowImageWidth +'px;"></div></td>');
-	var InstructionArrowImageN = $('<td id="Cell-N_' + this.ControlID + '" class="ArrowImageCell" style="visibility:hidden"><div class="ArrowImage ArrowImage_N" id="ArrowImage_N_Div_' + this.ControlID + '" style="height:' + this.arrowImageHeight + 'px;width:'+ this.arrowImageWidth +'px;"></div></td>');
-	var InstructionArrowImageNE = $('<td id="Cell-NE_' + this.ControlID + '" class="ArrowImageCell" style="visibility:hidden"><div class="ArrowImage ArrowImage_NE" id="ArrowImage_NE_Div_' + this.ControlID + '" style="height:' + this.arrowImageHeight + 'px;width:'+ this.arrowImageWidth +'px;"></div></td>');
-	var InstructionArrowImageW = $('<td id="Cell-W_' + this.ControlID + '" class="ArrowImageCell" style="visibility:hidden"><div class="ArrowImage ArrowImage_W" id="ArrowImage_W_Div_' + this.ControlID + '" style="height:' + this.arrowImageHeight + 'px;width:'+ this.arrowImageWidth +'px;"></div></td>');
-	var InstructionArrowImageE = $('<td id="Cell-E_' + this.ControlID + '" class="ArrowImageCell" style="visibility:hidden"><div class="ArrowImage ArrowImage_E" id="ArrowImage_E_Div_' + this.ControlID + '" style="height:' + this.arrowImageHeight + 'px;width:'+ this.arrowImageWidth +'px;"></div></td>');
-	var InstructionArrowImageSW = $('<td id="Cell-SW_' + this.ControlID + '" class="ArrowImageCell" style="visibility:hidden"><div class="ArrowImage ArrowImage_SW" id="ArrowImage_SW_Div_' + this.ControlID + '" style="height:' + this.arrowImageHeight + 'px;width:'+ this.arrowImageWidth +'px;"></div></td>');
-	var InstructionArrowImageSE = $('<td id="Cell-SE_' + this.ControlID + '" class="ArrowImageCell" style="visibility:hidden"><div class="ArrowImage ArrowImage_SE" id="ArrowImage_SE_Div_' + this.ControlID + '" style="height:' + this.arrowImageHeight + 'px;width:'+ this.arrowImageWidth +'px;"></div></td>');
-	var InstructionArrowImageS = $('<td id="Cell-S_' + this.ControlID + '" class="ArrowImageCell" style="visibility:hidden"><div class="ArrowImage ArrowImage_S" id="ArrowImage_S_Div_' + this.ControlID + '" style="height:' + this.arrowImageHeight + 'px;width:'+ this.arrowImageWidth +'px;"></div></td>');
+	var InstructionArrowImageNW = $('<td id="Cell-NW_' + this.ControlID + '" class="ArrowImageCell ArrowImageCell_NW" style="visibility:hidden"><div class="ArrowImage ArrowImage_NW" id="ArrowImage_NW_Div_' + this.ControlID + '" style="height:' + this.arrowImageHeight + 'px;width:'+ this.arrowImageWidth +'px;"></div></td>');
+	var InstructionArrowImageN = $('<td id="Cell-N_' + this.ControlID + '" class="ArrowImageCell ArrowImageCell_N" style="visibility:hidden"><div class="ArrowImage ArrowImage_N" id="ArrowImage_N_Div_' + this.ControlID + '" style="height:' + this.arrowImageHeight + 'px;width:'+ this.arrowImageWidth +'px;"></div></td>');
+	var InstructionArrowImageNE = $('<td id="Cell-NE_' + this.ControlID + '" class="ArrowImageCell ArrowImageCell_NE" style="visibility:hidden"><div class="ArrowImage ArrowImage_NE" id="ArrowImage_NE_Div_' + this.ControlID + '" style="height:' + this.arrowImageHeight + 'px;width:'+ this.arrowImageWidth +'px;"></div></td>');
+	var InstructionArrowImageW = $('<td id="Cell-W_' + this.ControlID + '" class="ArrowImageCell ArrowImageCell_W" style="visibility:hidden"><div class="ArrowImage ArrowImage_W" id="ArrowImage_W_Div_' + this.ControlID + '" style="height:' + this.arrowImageHeight + 'px;width:'+ this.arrowImageWidth +'px;"></div></td>');
+	var InstructionArrowImageE = $('<td id="Cell-E_' + this.ControlID + '" class="ArrowImageCell ArrowImageCell_E" style="visibility:hidden"><div class="ArrowImage ArrowImage_E" id="ArrowImage_E_Div_' + this.ControlID + '" style="height:' + this.arrowImageHeight + 'px;width:'+ this.arrowImageWidth +'px;"></div></td>');
+	var InstructionArrowImageSW = $('<td id="Cell-SW_' + this.ControlID + '" class="ArrowImageCell ArrowImageCell_SW" style="visibility:hidden"><div class="ArrowImage ArrowImage_SW" id="ArrowImage_SW_Div_' + this.ControlID + '" style="height:' + this.arrowImageHeight + 'px;width:'+ this.arrowImageWidth +'px;"></div></td>');
+	var InstructionArrowImageSE = $('<td id="Cell-SE_' + this.ControlID + '" class="ArrowImageCell ArrowImageCell_SE" style="visibility:hidden"><div class="ArrowImage ArrowImage_SE" id="ArrowImage_SE_Div_' + this.ControlID + '" style="height:' + this.arrowImageHeight + 'px;width:'+ this.arrowImageWidth +'px;"></div></td>');
+	var InstructionArrowImageS = $('<td id="Cell-S_' + this.ControlID + '" class="ArrowImageCell ArrowImageCell_S" style="visibility:hidden"><div class="ArrowImage ArrowImage_S" id="ArrowImage_S_Div_' + this.ControlID + '" style="height:' + this.arrowImageHeight + 'px;width:'+ this.arrowImageWidth +'px;"></div></td>');
 
 	// text content
 	var InstructionContentCell = $('<td id="Cell-C_'+ this.ControlID +'"></td>');
@@ -578,3 +576,164 @@ OverlayInstructions.prototype.createInstructionBlockElement = function () {
 	$( "body" ).append(InstructionBlock);
 	return InstructionBlock;
 };
+
+InstructionLink = function(instructionObject) {
+	this.InstructionObject = instructionObject;
+	this.ID = instructionObject.getID();
+	this.nextInstruction = null;
+	this.previousInstruction = null;
+};
+
+InstructionsList = function() {
+	this.firstInstruction = null;
+    this.lastInstruction = null;
+	this.size = 0;
+};
+
+InstructionsList.prototype.getFirstInstruction = function() {
+	return this.firstInstruction;
+};
+
+InstructionsList.prototype.getLastInstruction = function() {
+	return this.lastInstruction;
+};
+
+InstructionsList.prototype.getSize = function() {
+    return this.size;
+};
+  
+InstructionsList.prototype.add = function(instructionObject) {
+
+    var newInstruction = new InstructionLink(instructionObject);
+    newInstruction.InstructionObject = instructionObject;
+
+    if (this.firstInstruction == null) {
+      this.firstInstruction = newInstruction;
+      this.lastInstruction = newInstruction;
+    }
+    else {
+      this.lastInstruction.nextInstruction = newInstruction;
+      this.lastInstruction = newInstruction;
+    }
+
+    this.size++;
+};
+
+InstructionsList.prototype.addAfter = function(ID,instructionObject) {
+	//TODO : implement inserting of instructions in-between sequence
+};
+
+InstructionsList.prototype.remove =  function(ID) {
+	var currentInstruction = this.firstInstruction;
+
+    if (this.size == 0) {
+      return;
+    }
+
+    var wasDeleted = false;
+
+    /* Are we deleting the first node? */
+    if (ID == currentInstruction.ID) {
+
+      /* Only one node in list, be careful! */
+        if (currentInstruction.nextInstruction == null) {
+          this.firstInstruction.InstructionObject = null;
+          this.firstInstruction = null;
+          this.lastInstruction = null;
+          this.size--;
+          return;
+        }
+
+      currentInstruction.InstructionObject = null;
+      currentInstruction = currentInstruction.nextInstruction;
+      this.firstInstruction = currentInstruction;
+      this.size--;
+      return;
+    }
+
+    while (true) {
+        /* If end of list, stop */
+        if (currentInstruction == null) {
+          wasDeleted = false;
+            break;
+        }
+
+        /* Check if the data of the next is what we're looking for */
+        var nextInstruction = currentInstruction.nextInstruction;
+        if (nextInstruction != null) {
+            if (ID == nextInstruction.ID) {
+
+                /* Found the right one, loop around the node */
+                var nextNextInstruction = nextInstruction.nextInstruction;
+                currentInstruction.nextInstruction = nextNextInstruction;
+
+                nextInstruction = null;
+                wasDeleted = true;
+                break;
+            }
+        }
+
+        currentInstruction = currentInstruction.nextInstruction;
+    }
+
+    if (wasDeleted) {
+      this.size--;
+    }
+};
+
+
+PageTour = function(name) {
+	this.name=name;
+};
+
+PageTour.prototype.name ="";
+PageTour.prototype.pageInstructionsList = null;
+PageTour.prototype.currentActiveInstruction = null;
+PageTour.prototype.getPageInstructionsList = function() {
+	if(!this.pageInstructionsList){
+		this.pageInstructionsList = new InstructionsList();
+	}
+	return this.pageInstructionsList ;
+};
+PageTour.prototype.start = function() {
+	var firstInstruction = this.getPageInstructionsList().getFirstInstruction();
+	if(firstInstruction){
+		this.currentActiveInstruction = firstInstruction;
+		firstInstruction.InstructionObject.show();
+	}	 
+};
+PageTour.prototype.resume = function() {
+	if(this.currentActiveInstruction){
+		this.currentActiveInstruction.InstructionObject.show();
+	}	 
+};
+
+PageTour.prototype.suspend = function() {
+	if(this.currentActiveInstruction){
+		this.currentActiveInstruction.InstructionObject.hide();
+	}	 
+};
+
+PageTour.prototype.stop = function() {
+	if(this.currentActiveInstruction){
+		this.currentActiveInstruction.InstructionObject.hide();
+		var firstInstruction = this.getPageInstructionsList().getFirstInstruction();
+		this.currentActiveInstruction = firstInstruction;
+	}	 
+};
+PageTour.prototype.showNextInstruction = function() {
+	if(this.currentActiveInstruction){
+		var nextInstruction = this.currentActiveInstruction.nextInstruction;
+		if(nextInstruction){
+			nextInstruction.InstructionObject.show();
+			this.currentActiveInstruction = nextInstruction;
+		}
+		
+	}
+};
+PageTour.prototype.add = function(overlayInstructionObject) {
+	var me = this;
+	overlayInstructionObject.addListener("onOkClick",function(){ debugger; me.showNextInstruction(); });
+	this.getPageInstructionsList().add(overlayInstructionObject);
+};
+

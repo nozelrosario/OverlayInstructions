@@ -11,8 +11,8 @@
 <form id="form1" class="" >
 
 	  <button id="input1" type="button" style="position:absolute;left:0px;top:0px;" onclick="inst1.show();">Button 1 (0,0)=>NW</button><br>
-	  <button id="input2" type="button" style="position:absolute;left:80%;top:0px;" onclick="inst2.show();">Button 2 (80%,0)=>SW</button>
-	  <button id="input3" type="button" style="position:absolute;left:0px;top:80%;" onclick="inst3.show();">Button 3 (0,80%)=>NE</button>
+	  <button id="input2" type="button" style="position:absolute;left:80%;top:0px;" onclick="inst2.show();">Button 2 (80%,0)=>NE</button>
+	  <button id="input3" type="button" style="position:absolute;left:0px;top:80%;" onclick="inst3.show();">Button 3 (0,80%)=>SW</button>
 	  <button id="input4" type="button" style="position:absolute;left:80%;top:80%;" onclick="inst4.show();">Button 4 (80%,80%)=>SE</button>
 	  <button id="input5" type="button" style="position:absolute;left:0px;top:40%;" onclick="inst5.show();">Button 5 (0,40%)=>W</button>
 	  <button id="input6" type="button" style="position:absolute;left:80%;top:40%;" onclick="inst6.show();">Button 6 (80%,40%)=>E</button>
@@ -22,6 +22,8 @@
 </form>
 
 <script type="text/javascript">
+
+//(ID,InstructionString,InstructionDetailsString,targetID,arrowImagePosition,arrowImageURL,posX,posY,arrowImageRotationAngle)
 var inst1 = new OverlayInstructions("inst1","Click here to view Notifications","<br/> Notifications on New Messages <br/> Even on New Tasks","input1","");
 var inst2 = new OverlayInstructions("inst2","Click here to view Notifications","<br/> Notifications on New Messages <br/> Even on New Tasks","input2","");
 var inst3 = new OverlayInstructions("inst3","Click here to view Notifications","<br/> Notifications on New Messages <br/> Even on New Tasks","input3","");
@@ -30,6 +32,19 @@ var inst5 = new OverlayInstructions("inst5","Click here to view Notifications","
 var inst6 = new OverlayInstructions("inst6","Click here to view Notifications","<br/> Notifications on New Messages <br/> Even on New Tasks","input6","E");
 var inst7 = new OverlayInstructions("inst7","Click here to view Notifications","<br/> Notifications on New Messages <br/> Even on New Tasks","input7","N");
 var inst8 = new OverlayInstructions("inst8","Click here to view Notifications","<br/> Notifications on New Messages <br/> Even on New Tasks","input8","S");
+var inst9 = new OverlayInstructions("inst9","Click here to view Notifications","<br/> Notifications on New Messages <br/> Even on New Tasks",null,"S",null,300,300,0);
+
+var ChalkboardTour= new PageTour("ChalkBoard");
+ChalkboardTour.add(inst1);
+ChalkboardTour.add(inst2);
+ChalkboardTour.add(inst3);
+ChalkboardTour.add(inst4);
+ChalkboardTour.add(inst5);
+ChalkboardTour.add(inst6);
+ChalkboardTour.add(inst7);
+ChalkboardTour.add(inst8);
+ChalkboardTour.add(inst9);
+ChalkboardTour.start();
 
 </script>
 </body>

@@ -40,6 +40,15 @@ float:right;
 vertical-align:top;
 }
 
+.InstructionBlock .ArrowImageCell_S,.InstructionBlock .ArrowImageCell_SW,.InstructionBlock .ArrowImageCell_SE {
+vertical-align:bottom;
+}
+
+.InstructionBlock .ArrowImageCell_E, .InstructionBlock .ArrowImageCell_W {
+vertical-align:middle;
+}
+
+
 .InstructionBlock .InstructionOKButtonHolder {
 width:100%;
 display:table;
