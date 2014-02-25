@@ -24,15 +24,15 @@
 <script type="text/javascript">
 
 //(ID,InstructionString,InstructionDetailsString,targetID,arrowImagePosition,arrowImageURL,posX,posY,arrowImageRotationAngle)
-var inst1 = new OverlayInstructions("inst1","Click here to view Notifications","<br/> Notifications on New Messages <br/> Even on New Tasks","input1","");
-var inst2 = new OverlayInstructions("inst2","Click here to view Notifications","<br/> Notifications on New Messages <br/> Even on New Tasks","input2","");
-var inst3 = new OverlayInstructions("inst3","Click here to view Notifications","<br/> Notifications on New Messages <br/> Even on New Tasks","input3","");
-var inst4 = new OverlayInstructions("inst4","Click here to view Notifications","<br/> Notifications on New Messages <br/> Even on New Tasks","input4","");
-var inst5 = new OverlayInstructions("inst5","Click here to view Notifications","<br/> Notifications on New Messages <br/> Even on New Tasks","input5","W");
-var inst6 = new OverlayInstructions("inst6","Click here to view Notifications","<br/> Notifications on New Messages <br/> Even on New Tasks","input6","E");
-var inst7 = new OverlayInstructions("inst7","Click here to view Notifications","<br/> Notifications on New Messages <br/> Even on New Tasks","input7","N");
-var inst8 = new OverlayInstructions("inst8","Click here to view Notifications","<br/> Notifications on New Messages <br/> Even on New Tasks","input8","S");
-var inst9 = new OverlayInstructions("inst9","Click here to view Notifications","<br/> Notifications on New Messages <br/> Even on New Tasks",null,"S",null,300,300,0);
+var inst1 = new OverlayInstructions({ID:"inst1", InstructionString:"Click here to view Notifications",InstructionDetailsString:"<br/> Notifications on New Messages <br/> Even on New Tasks",targetID:"input1"});
+var inst2 = new OverlayInstructions({ID:"inst2",InstructionString:"Click here to view Notifications",InstructionDetailsString:"<br/> Notifications on New Messages <br/> Even on New Tasks",targetID:"input2"});
+var inst3 = new OverlayInstructions({ID:"inst3",InstructionString:"Click here to view Notifications",InstructionDetailsString:"<br/> Notifications on New Messages <br/> Even on New Tasks",targetID:"input3"});
+var inst4 = new OverlayInstructions({ID:"inst4",InstructionString:"Click here to view Notifications",InstructionDetailsString:"<br/> Notifications on New Messages <br/> Even on New Tasks",targetID:"input4"});
+var inst5 = new OverlayInstructions({ID:"inst5",InstructionString:"Click here to view Notifications",InstructionDetailsString:"<br/> Notifications on New Messages <br/> Even on New Tasks",targetID:"input5",arrowImagePosition:"W"});
+var inst6 = new OverlayInstructions({ID:"inst6",InstructionString:"Click here to view Notifications",InstructionDetailsString:"<br/> Notifications on New Messages <br/> Even on New Tasks",targetID:"input6",arrowImagePosition:"E"});
+var inst7 = new OverlayInstructions({ID:"inst7",InstructionString:"Click here to view Notifications",InstructionDetailsString:"<br/> Notifications on New Messages <br/> Even on New Tasks",targetID:"input7",arrowImagePosition:"N"});
+var inst8 = new OverlayInstructions({ID:"inst8",InstructionString:"Click here to view Notifications",InstructionDetailsString:"<br/> Notifications on New Messages <br/> Even on New Tasks",targetID:"input8",arrowImagePosition:"S"});
+var inst9 = new OverlayInstructions({ID:"inst9",InstructionString:"Click here to view Notifications",InstructionDetailsString:"<br/> Notifications on New Messages <br/> Even on New Tasks",arrowImagePosition:"S",posX:300,posY:300,arrowImageRotationAngle:0});
 
 var ChalkboardTour= new PageTour("ChalkBoard");
 ChalkboardTour.add(inst1);
