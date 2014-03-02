@@ -48,6 +48,10 @@ vertical-align:bottom;
 vertical-align:middle;
 }
 
+.InstructionBlock .ArrowImage_S, .InstructionBlock .ArrowImage_N {
+	margin-left:30%;
+}
+
 
 .InstructionBlock .InstructionOKButtonHolder {
 width:100%;

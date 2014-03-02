@@ -1,34 +1,34 @@
 
 .InstructionBlock.ChalkBoard .ArrowImage_NW {
-	background-image: url('arrowImages/arrow-NW.png');
+	background-image: url('arrowImages/ChalkBoard/arrow-NW.png');
 }
 
 .InstructionBlock.ChalkBoard .ArrowImage_N {
-	background-image: url('arrowImages/arrow-NW.png');
+	background-image: url('arrowImages/ChalkBoard/arrow-N.png');
 }
 
 .InstructionBlock.ChalkBoard .ArrowImage_NE {
-	background-image: url('arrowImages/arrow-NW.png');
+	background-image: url('arrowImages/ChalkBoard/arrow-NE.png');
 }
 
 .InstructionBlock.ChalkBoard .ArrowImage_E {
-	background-image: url('arrowImages/arrow-NW.png');
+	background-image: url('arrowImages/ChalkBoard/arrow-E.png');
 }
 
 .InstructionBlock.ChalkBoard .ArrowImage_SE {
-	background-image: url('arrowImages/arrow-NW.png');
+	background-image: url('arrowImages/ChalkBoard/arrow-SE.png');
 }
 
 .InstructionBlock.ChalkBoard .ArrowImage_S {
-	background-image: url('arrowImages/arrow-NW.png');
+	background-image: url('arrowImages/ChalkBoard/arrow-S.png');
 }
 
 .InstructionBlock.ChalkBoard .ArrowImage_SW {
-	background-image: url('arrowImages/arrow-NW.png');
+	background-image: url('arrowImages/ChalkBoard/arrow-SW.png');
 }
 
 .InstructionBlock.ChalkBoard .ArrowImage_W {
-	background-image: url('arrowImages/arrow-NW.png');
+	background-image: url('arrowImages/ChalkBoard/arrow-W.png');
 }
 
 

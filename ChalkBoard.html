@@ -18,10 +18,13 @@
 	  <button id="input6" type="button" style="position:absolute;left:80%;top:40%;" onclick="inst6.show();">Button 6 (80%,40%)=>E</button>
 	  <button id="input7" type="button" style="position:absolute;left:40%;top:0px;" onclick="inst7.show();">Button 7 (40%,0)=>N</button>
 	  <button id="input8" type="button" style="position:absolute;left:40%;top:80%;" onclick="inst8.show();">Button 8 (40%,80%)=>S</button>
+	  <button id="input9" type="button" style="position:absolute;left:40%;top:40%;" onclick="inst9.show();">Button 8 (50%,50%)=>ALL</button>
 
 </form>
 
 <script type="text/javascript">
+
+var ChalkboardTour= new PageTour("ChalkBoard");
 
 //(ID,InstructionString,InstructionDetailsString,targetID,arrowImagePosition,arrowImageURL,posX,posY,arrowImageRotationAngle)
 var inst1 = new OverlayInstructions({ID:"inst1", InstructionString:"Click here to view Notifications",InstructionDetailsString:"<br/> Notifications on New Messages <br/> Even on New Tasks",targetID:"input1"});
@@ -32,9 +35,16 @@ var inst5 = new OverlayInstructions({ID:"inst5",InstructionString:"Click here to
 var inst6 = new OverlayInstructions({ID:"inst6",InstructionString:"Click here to view Notifications",InstructionDetailsString:"<br/> Notifications on New Messages <br/> Even on New Tasks",targetID:"input6",arrowImagePosition:"E"});
 var inst7 = new OverlayInstructions({ID:"inst7",InstructionString:"Click here to view Notifications",InstructionDetailsString:"<br/> Notifications on New Messages <br/> Even on New Tasks",targetID:"input7",arrowImagePosition:"N"});
 var inst8 = new OverlayInstructions({ID:"inst8",InstructionString:"Click here to view Notifications",InstructionDetailsString:"<br/> Notifications on New Messages <br/> Even on New Tasks",targetID:"input8",arrowImagePosition:"S"});
-var inst9 = new OverlayInstructions({ID:"inst9",InstructionString:"Click here to view Notifications",InstructionDetailsString:"<br/> Notifications on New Messages <br/> Even on New Tasks",arrowImagePosition:"S",posX:300,posY:300,arrowImageRotationAngle:0});
 
-var ChalkboardTour= new PageTour("ChalkBoard");
+		var centerScreenY = $(window).height()/4;
+		var centerScreenX = $(window).width()/3;
+var inst9 = new OverlayInstructions({ID:"inst9",InstructionString:"Click here to view Notifications",InstructionDetailsString:"<br/> Notifications on New Messages <br/> Even on New Tasks",arrowImagePosition:"S",posX:centerScreenX,posY:centerScreenY,arrowImageRotationAngle:0});
+inst9.showArrow("N",true);
+inst9.showArrow("E",true);
+inst9.showArrow("W",true);
+inst9.addListener("onOkClick",function() { ChalkboardTour.start();  });
+
+
 ChalkboardTour.add(inst1);
 ChalkboardTour.add(inst2);
 ChalkboardTour.add(inst3);
@@ -44,7 +54,7 @@ ChalkboardTour.add(inst6);
 ChalkboardTour.add(inst7);
 ChalkboardTour.add(inst8);
 ChalkboardTour.add(inst9);
-ChalkboardTour.start();
+//ChalkboardTour.start();
 
 </script>
 </body>

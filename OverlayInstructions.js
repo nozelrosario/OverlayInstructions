@@ -78,11 +78,15 @@ OverlayInstructions.prototype.deltaX = 5;  // 5px offset horizontal , so that th
 OverlayInstructions.prototype.deltaY = 5;  // 5px vertical offset.
 OverlayInstructions.prototype.InstructionBlockElment = null;
 OverlayInstructions.prototype.InstructionOverlay = null;
+OverlayInstructions.prototype.arrowPositionFixed = false;
 OverlayInstructions.prototype.arrowPosition = "W"; // {"E","W","S","N","NE","NW","SE","SW"}
 OverlayInstructions.prototype.arrowImage = "";
-OverlayInstructions.prototype.arrowImageHeight = 50;  //px
-OverlayInstructions.prototype.arrowImageWidth = 100;  //px
+OverlayInstructions.prototype.horizontalArrowImageHeight = 75;  //px
+OverlayInstructions.prototype.horizontalArrowImageWidth = 150;  //px
+OverlayInstructions.prototype.verticalArrowImageHeight = 140;  //px
+OverlayInstructions.prototype.verticalArrowImageWidth = 75;  //px
 OverlayInstructions.prototype.arrowImageRotationAngle = 0;
+OverlayInstructions.prototype.arrowImageRotationFixed = false; // if the rotation angle is defaulted by the user
 OverlayInstructions.prototype.instructionBlockTheme = "ChalkBoard";
 OverlayInstructions.prototype.arrowStyles = {
 	"E" : "arrowImages/arrow-E.png",
@@ -97,6 +101,7 @@ OverlayInstructions.prototype.arrowStyles = {
 OverlayInstructions.prototype.InstructionText = "";
 OverlayInstructions.prototype.InstructionDetailsText = "";
 OverlayInstructions.prototype.events = {
+	"__on_show_next_instruction__": true,  // @private :used for PageTour
 	"onOkClick": true,
 	"onInitialized": true,
 	"onShow": true,
@@ -116,6 +121,7 @@ OverlayInstructions.prototype.constructor = function (params) {
 
 		if (params.arrowImagePosition && this.isValidArrowPosition(params.arrowImagePosition)) {
 			this.arrowPosition = params.arrowImagePosition;
+			this.arrowPositionFixed = true;
 			if (params.arrowImageURL) {
 				this.setArrowImage(params.arrowImageURL);
 			}
@@ -127,20 +133,24 @@ OverlayInstructions.prototype.constructor = function (params) {
 
 		if (params.posX && params.posY) {
 			this.InstructionPositionFixed = true;
-			this.setPosition(params.posX, params.posY);
+			this.InstructionPositionX = params.posX;
+			this.InstructionPositionY = params.posY;
+			//this.setPosition(params.posX, params.posY);
 		} else {
-			this.InstructionPositionFixed = true;
-			this.calculateInstructionBlockCoOrdinates(this.arrowPosition);
-			this.setPosition(this.InstructionPositionX, this.InstructionPositionY);
-			if (params.arrowImageRotationAngle) {
-				this.setArrowImageRotationAngle(params.arrowImageRotationAngle);
-			}
-
+			this.InstructionPositionFixed = false;
 		}
+		
+		if(params.arrowImageRotationAngle) {
+			this.arrowImageRotationFixed = true;
+			this.arrowImageRotationAngle = param.arrowImageRotationAngl;
+		} else {
+			this.arrowImageRotationFixed = false;
+		}
+		
 
 	}
 	this.showArrow(this.arrowPosition, false);
-
+	
 	var eventData = { OverlayInstructionObj : this };
 	$("#InstructionOKButton_" + this.ControlID).on("click", eventData, this.OnInstructionOKButtonClick);
 
@@ -168,6 +178,7 @@ OverlayInstructions.prototype.OnInstructionOKButtonClick = function (eventData) 
 	var OverlayInstructionObj = eventData.data.OverlayInstructionObj;
 	OverlayInstructionObj.hide();
 	OverlayInstructionObj.fireEvent("onOkClick");
+	OverlayInstructionObj.fireEvent("__on_show_next_instruction__");
 	//detach event handlers
 	//remove instruction block
 	//remove overlay
@@ -270,12 +281,12 @@ OverlayInstructions.prototype.autoSetArrowPosition = function () {
 
 		// resultant Horizontal & Vertical height-width of instruction block
 		var horizontal_InstructionBlockHeight, horizontal_InstructionBlockWidth;
-		horizontal_InstructionBlockHeight = (this.arrowImageHeight > instructionContentHeight) ? this.arrowImageHeight : instructionContentHeight;
+		horizontal_InstructionBlockHeight = (this.horizontalArrowImageHeight > instructionContentHeight) ? this.horizontalArrowImageHeight : instructionContentHeight;
 		horizontal_InstructionBlockWidth = this.arrowImageWidth + instructionContentWidth;
 
 		var vertical_InstructionBlockHeight, vertical_InstructionBlockWidth;
-		vertical_InstructionBlockHeight = this.arrowImageHeight + instructionContentHeight;
-		vertical_InstructionBlockWidth = (this.arrowImageWidth > instructionContentWidth) ? this.arrowImageWidth : instructionContentWidth;
+		vertical_InstructionBlockHeight = this.verticalArrowImageHeight + instructionContentHeight;
+		vertical_InstructionBlockWidth = (this.verticalArrowImageWidth > instructionContentWidth) ? this.verticalArrowImageWidth : instructionContentWidth;
 
 		// Determine the appropriate arrow position based on target dimensions & screen dimensions
 
@@ -373,57 +384,57 @@ OverlayInstructions.prototype.calculateInstructionBlockCoOrdinates = function (a
 
 		// resultant Horizontal & Vertical height-width of instruction block
 		var horizontal_InstructionBlockHeight, horizontal_InstructionBlockWidth;
-		horizontal_InstructionBlockHeight = (this.arrowImageHeight > instructionContentHeight) ? this.arrowImageHeight : instructionContentHeight;
-		horizontal_InstructionBlockWidth = this.arrowImageWidth + instructionContentWidth;
+		horizontal_InstructionBlockHeight = (this.horizontalArrowImageHeight > instructionContentHeight) ? this.horizontalArrowImageHeight : instructionContentHeight;
+		horizontal_InstructionBlockWidth = this.horizontalArrowImageWidth + instructionContentWidth;
 
 		var vertical_InstructionBlockHeight, vertical_InstructionBlockWidth;
-		vertical_InstructionBlockHeight = this.arrowImageHeight + instructionContentHeight;
-		vertical_InstructionBlockWidth = (this.arrowImageWidth > instructionContentWidth) ? this.arrowImageWidth : instructionContentWidth;
+		vertical_InstructionBlockHeight = this.verticalArrowImageHeight + instructionContentHeight;
+		vertical_InstructionBlockWidth = (this.verticalArrowImageWidth > instructionContentWidth) ? this.verticalArrowImageWidth : instructionContentWidth;
 
 
 		switch (arrowPosition) {
 		case "NW":
 			instructionBlockX = targetElementPositionX2 + this.deltaX;
 			instructionBlockY = targetElementPositionY2 + this.deltaY;
-			arrowImageRotationAngle = 30;
+			arrowImageRotationAngle = 0;//30;
 			break;//done
 
 		case "N":
 			instructionBlockX = ((targetElementPositionX1 + ((targetElementPositionX2 - targetElementPositionX1) / 2)) + this.deltaX) - (vertical_InstructionBlockWidth / 2);
 			instructionBlockY = targetElementPositionY2 + this.deltaY;
-			arrowImageRotationAngle = 90;
+			arrowImageRotationAngle = 0;//90;
 			break;
 
 		case "NE":
 			instructionBlockX = targetElementPositionX1 - (horizontal_InstructionBlockWidth + this.deltaX);
 			instructionBlockY = targetElementPositionY1  + this.deltaY;
-			arrowImageRotationAngle = 140;
+			arrowImageRotationAngle = 0;//140;
 			break;//done
 
 		case "E":
 			instructionBlockX = targetElementPositionX1 - (horizontal_InstructionBlockWidth + this.deltaX);
 			instructionBlockY = ((targetElementPositionY1 + ((targetElementPositionY2 - targetElementPositionY1) / 2)) - this.deltaY) - ((horizontal_InstructionBlockHeight - (this.deltaX * 2)) / 2);
-			arrowImageRotationAngle = 180;
+			arrowImageRotationAngle = 0;//180;
 			break; //done
 
 
 		case "SE":
 			instructionBlockX = targetElementPositionX1 - (targetElementWidth / 2) - (vertical_InstructionBlockWidth + this.deltaX);
 			instructionBlockY = targetElementPositionY1 - (vertical_InstructionBlockHeight + this.deltaY);
-			arrowImageRotationAngle = 220;
+			arrowImageRotationAngle = 0;//220;
 			break;//done
 
 		case "S":
 			instructionBlockX = (targetElementPositionX1 + ((targetElementPositionX2 - targetElementPositionX1) / 2)) - ((vertical_InstructionBlockWidth / 2) + this.deltaX);
 			instructionBlockY = targetElementPositionY1 - (vertical_InstructionBlockHeight + targetElementHeight + this.deltaY);
-			arrowImageRotationAngle = 270;
+			arrowImageRotationAngle = 0;//270;
 			break;//done
 
 
 		case "SW":
 			instructionBlockX = targetElementPositionX2 + this.deltaX;
 			instructionBlockY = (targetElementPositionY1 + this.deltaY) - (vertical_InstructionBlockHeight);
-			arrowImageRotationAngle = 330;
+			arrowImageRotationAngle = 0;//330;
 			break;//done
 
 		case "W":
@@ -446,7 +457,7 @@ OverlayInstructions.prototype.calculateInstructionBlockCoOrdinates = function (a
 
 	this.InstructionPositionX = (instructionBlockX < 0) ? 0 : instructionBlockX;
 	this.InstructionPositionY = (instructionBlockY < 0) ? 0 : instructionBlockY;
-	this.arrowImageRotationAngle = arrowImageRotationAngle;
+	this.setArrowImageRotationAngle(arrowImageRotationAngle);
 
 };
 
@@ -460,30 +471,36 @@ OverlayInstructions.prototype.refreshInstructionBlockPosition = function () {
 
 OverlayInstructions.prototype.hideUnWantedCells = function () {
 	"use strict";
-	if ((this.arrowPosition.indexOf("S") !== -1) || this.arrowPosition === "W" || this.arrowPosition === "E") {
-		// hide 1st row TopRow_
-		//$('#TopRow_'+ this.ControlID).hide();
-		$('#Cell-NW_' + this.ControlID).hide();
-		$('#Cell-N_' + this.ControlID).hide();
-		$('#Cell-NE_' + this.ControlID).hide();
+	if(!this.InstructionPositionFixed) {
+		if ((this.arrowPosition.indexOf("S") !== -1) || this.arrowPosition === "W" || this.arrowPosition === "E") {
+			// hide 1st row TopRow_
+			//$('#TopRow_'+ this.ControlID).hide();
+			$('#Cell-NW_' + this.ControlID).hide();
+			$('#Cell-N_' + this.ControlID).hide();
+			$('#Cell-NE_' + this.ControlID).hide();
+		}
+		if (this.arrowPosition.indexOf("E") !== -1) {
+			//hide 1st column Cell-NW_inst1,Cell-W_inst1,Cell-SW_inst1
+			$('#Cell-NW_' + this.ControlID).hide();
+			$('#Cell-W_' + this.ControlID).hide();
+			$('#Cell-SW_' + this.ControlID).hide();
+		}
 	}
-	if (this.arrowPosition.indexOf("E") !== -1) {
-		//hide 1st column Cell-NW_inst1,Cell-W_inst1,Cell-SW_inst1
-		$('#Cell-NW_' + this.ControlID).hide();
-		$('#Cell-W_' + this.ControlID).hide();
-		$('#Cell-SW_' + this.ControlID).hide();
-	}
-
 };
 
 OverlayInstructions.prototype.setPosition = function (positionX, positionY) {
 	"use strict";
-	$('#InstructionBlock_' + this.ControlID).offset({top: positionY, left: positionX});
+	//$('#InstructionBlock_' + this.ControlID).offset({top: positionY, left: positionX});  
+	// $.offset has issues determining current offset of hidden element, hence misplaces the co-ordinates
+	//using the old css way :)
+	$('#InstructionBlock_' + this.ControlID).css('top', positionY);
+	$('#InstructionBlock_' + this.ControlID).css('left', positionX);
 };
 
 OverlayInstructions.prototype.show = function () {
 	"use strict";
 	this.showOverlay();
+	this.setArrowImageRotationAngle();
 	this.refreshInstructionBlockPosition();
 	$('#InstructionBlock_' + this.ControlID).show();
 	this.fireEvent("onShow");
@@ -535,15 +552,27 @@ OverlayInstructions.prototype.showArrow = function (newArrowPosition, keepCurren
 	if (newArrowPosition && this.isValidArrowPosition(newArrowPosition)) {
 		if (!keepCurrentArrow) {
 			this.hideAllArrows();
+		} else {
+			// Adjust the hidden cells , so the width is compensated and arrow appears in right cell
+			if ((this.arrowPosition.indexOf("S") !== -1) || this.arrowPosition === "W" || this.arrowPosition === "E") {
+				$('#Cell-NW_' + this.ControlID).css("display","table-cell");
+				$('#Cell-N_' + this.ControlID).css("display","table-cell");
+				$('#Cell-NE_' + this.ControlID).css("display","table-cell");
+			}
+			if (this.arrowPosition.indexOf("E") !== -1) {
+				$('#Cell-NW_' + this.ControlID).css("display","table-cell");
+				$('#Cell-W_' + this.ControlID).css("display","table-cell");
+				$('#Cell-SW_' + this.ControlID).css("display","table-cell");
+			}
 		}
 		this.arrowPosition = newArrowPosition;
-		$('#Cell-' + newArrowPosition + '_' + this.ControlID).visible();
+		$('#Cell-' + newArrowPosition + '_' + this.ControlID).visible();		
 	}
 };
 
 OverlayInstructions.prototype.setArrowImageRotationAngle = function (arrowImageRotationAngle) {
 	"use strict";
-	if (arrowImageRotationAngle) {
+	if (arrowImageRotationAngle && !this.arrowImageRotationFixed) {
 		this.arrowImageRotationAngle = arrowImageRotationAngle;
 	}
 	this.rotateArrowImage(this.arrowImageRotationAngle, this.arrowPosition);
@@ -621,14 +650,14 @@ OverlayInstructions.prototype.createInstructionBlockElement = function () {
 	var InstructionBlockBottomRow = $('<tr id="BottomRow_' + this.ControlID + '"></tr>');
 
 	//Arrow Images
-	var InstructionArrowImageNW = $('<td id="Cell-NW_' + this.ControlID + '" class="ArrowImageCell ArrowImageCell_NW" style="visibility:hidden"><div class="ArrowImage ArrowImage_NW" id="ArrowImage_NW_Div_' + this.ControlID + '" style="height:' + this.arrowImageHeight + 'px;width:' + this.arrowImageWidth + 'px;"></div></td>');
-	var InstructionArrowImageN = $('<td id="Cell-N_' + this.ControlID + '" class="ArrowImageCell ArrowImageCell_N" style="visibility:hidden"><div class="ArrowImage ArrowImage_N" id="ArrowImage_N_Div_' + this.ControlID + '" style="height:' + this.arrowImageHeight + 'px;width:' + this.arrowImageWidth + 'px;"></div></td>');
-	var InstructionArrowImageNE = $('<td id="Cell-NE_' + this.ControlID + '" class="ArrowImageCell ArrowImageCell_NE" style="visibility:hidden"><div class="ArrowImage ArrowImage_NE" id="ArrowImage_NE_Div_' + this.ControlID + '" style="height:' + this.arrowImageHeight + 'px;width:' + this.arrowImageWidth + 'px;"></div></td>');
-	var InstructionArrowImageW = $('<td id="Cell-W_' + this.ControlID + '" class="ArrowImageCell ArrowImageCell_W" style="visibility:hidden"><div class="ArrowImage ArrowImage_W" id="ArrowImage_W_Div_' + this.ControlID + '" style="height:' + this.arrowImageHeight + 'px;width:' + this.arrowImageWidth + 'px;"></div></td>');
-	var InstructionArrowImageE = $('<td id="Cell-E_' + this.ControlID + '" class="ArrowImageCell ArrowImageCell_E" style="visibility:hidden"><div class="ArrowImage ArrowImage_E" id="ArrowImage_E_Div_' + this.ControlID + '" style="height:' + this.arrowImageHeight + 'px;width:' + this.arrowImageWidth + 'px;"></div></td>');
-	var InstructionArrowImageSW = $('<td id="Cell-SW_' + this.ControlID + '" class="ArrowImageCell ArrowImageCell_SW" style="visibility:hidden"><div class="ArrowImage ArrowImage_SW" id="ArrowImage_SW_Div_' + this.ControlID + '" style="height:' + this.arrowImageHeight + 'px;width:' + this.arrowImageWidth + 'px;"></div></td>');
-	var InstructionArrowImageSE = $('<td id="Cell-SE_' + this.ControlID + '" class="ArrowImageCell ArrowImageCell_SE" style="visibility:hidden"><div class="ArrowImage ArrowImage_SE" id="ArrowImage_SE_Div_' + this.ControlID + '" style="height:' + this.arrowImageHeight + 'px;width:' + this.arrowImageWidth + 'px;"></div></td>');
-	var InstructionArrowImageS = $('<td id="Cell-S_' + this.ControlID + '" class="ArrowImageCell ArrowImageCell_S" style="visibility:hidden"><div class="ArrowImage ArrowImage_S" id="ArrowImage_S_Div_' + this.ControlID + '" style="height:' + this.arrowImageHeight + 'px;width:' + this.arrowImageWidth + 'px;"></div></td>');
+	var InstructionArrowImageNW = $('<td id="Cell-NW_' + this.ControlID + '" class="ArrowImageCell ArrowImageCell_NW" style="visibility:hidden"><div class="ArrowImage ArrowImage_NW" id="ArrowImage_NW_Div_' + this.ControlID + '" style="height:' + this.verticalArrowImageHeight + 'px;width:' + this.horizontalArrowImageWidth + 'px;"></div></td>');
+	var InstructionArrowImageN = $('<td id="Cell-N_' + this.ControlID + '" class="ArrowImageCell ArrowImageCell_N" style="visibility:hidden"><div class="ArrowImage ArrowImage_N" id="ArrowImage_N_Div_' + this.ControlID + '" style="height:' + this.verticalArrowImageHeight + 'px;width:' + this.verticalArrowImageWidth + 'px;"></div></td>');
+	var InstructionArrowImageNE = $('<td id="Cell-NE_' + this.ControlID + '" class="ArrowImageCell ArrowImageCell_NE" style="visibility:hidden"><div class="ArrowImage ArrowImage_NE" id="ArrowImage_NE_Div_' + this.ControlID + '" style="height:' + this.verticalArrowImageHeight + 'px;width:' + this.horizontalArrowImageWidth + 'px;"></div></td>');
+	var InstructionArrowImageW = $('<td id="Cell-W_' + this.ControlID + '" class="ArrowImageCell ArrowImageCell_W" style="visibility:hidden"><div class="ArrowImage ArrowImage_W" id="ArrowImage_W_Div_' + this.ControlID + '" style="height:' + this.horizontalArrowImageHeight + 'px;width:' + this.horizontalArrowImageWidth + 'px;"></div></td>');
+	var InstructionArrowImageE = $('<td id="Cell-E_' + this.ControlID + '" class="ArrowImageCell ArrowImageCell_E" style="visibility:hidden"><div class="ArrowImage ArrowImage_E" id="ArrowImage_E_Div_' + this.ControlID + '" style="height:' + this.horizontalArrowImageHeight + 'px;width:' + this.horizontalArrowImageWidth + 'px;"></div></td>');
+	var InstructionArrowImageSW = $('<td id="Cell-SW_' + this.ControlID + '" class="ArrowImageCell ArrowImageCell_SW" style="visibility:hidden"><div class="ArrowImage ArrowImage_SW" id="ArrowImage_SW_Div_' + this.ControlID + '" style="height:' + this.verticalArrowImageHeight + 'px;width:' + this.horizontalArrowImageWidth + 'px;"></div></td>');
+	var InstructionArrowImageSE = $('<td id="Cell-SE_' + this.ControlID + '" class="ArrowImageCell ArrowImageCell_SE" style="visibility:hidden"><div class="ArrowImage ArrowImage_SE" id="ArrowImage_SE_Div_' + this.ControlID + '" style="height:' + this.verticalArrowImageHeight + 'px;width:' + this.horizontalArrowImageWidth + 'px;"></div></td>');
+	var InstructionArrowImageS = $('<td id="Cell-S_' + this.ControlID + '" class="ArrowImageCell ArrowImageCell_S" style="visibility:hidden"><div class="ArrowImage ArrowImage_S" id="ArrowImage_S_Div_' + this.ControlID + '" style="height:' + this.verticalArrowImageHeight + 'px;width:' + this.verticalArrowImageWidth + 'px;"></div></td>');
 
 	// text content
 	var InstructionContentCell = $('<td id="Cell-C_' + this.ControlID + '"></td>');
@@ -869,7 +898,7 @@ PageTour.prototype.showNextInstruction = function () {
 PageTour.prototype.add = function (overlayInstructionObject) {
 	"use strict";
 	var me = this;
-	overlayInstructionObject.addListener("onOkClick", function () { me.showNextInstruction(); });
+	overlayInstructionObject.addListener("__on_show_next_instruction__", function () { me.showNextInstruction(); });
 	this.getPageInstructionsList().add(overlayInstructionObject);
 };
 
