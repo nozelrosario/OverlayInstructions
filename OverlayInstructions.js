@@ -88,6 +88,8 @@ OverlayInstructions.prototype.verticalArrowImageWidth = 75;  //px
 OverlayInstructions.prototype.arrowImageRotationAngle = 0;
 OverlayInstructions.prototype.arrowImageRotationFixed = false; // if the rotation angle is defaulted by the user
 OverlayInstructions.prototype.instructionBlockTheme = "ChalkBoard";
+OverlayInstructions.prototype.__Is_Rendered_Within_Tour__ = false;
+OverlayInstructions.prototype.__Is_Active__ = false;
 OverlayInstructions.prototype.arrowStyles = {
 	"E" : "arrowImages/arrow-E.png",
 	"W" : "arrowImages/arrow-W.png",
@@ -100,13 +102,7 @@ OverlayInstructions.prototype.arrowStyles = {
 };
 OverlayInstructions.prototype.InstructionText = "";
 OverlayInstructions.prototype.InstructionDetailsText = "";
-OverlayInstructions.prototype.events = {
-	"__on_show_next_instruction__": true,  // @private :used for PageTour
-	"onOkClick": true,
-	"onInitialized": true,
-	"onShow": true,
-	"onHide": true
-};
+OverlayInstructions.prototype.events = { };
 
 OverlayInstructions.prototype.constructor = function (params) {
 	"use strict";
@@ -116,8 +112,8 @@ OverlayInstructions.prototype.constructor = function (params) {
 		this.InstructionText = params.InstructionString;
 		this.InstructionDetailsText = params.InstructionDetailsString;
 		//	Create Instruction Block
-		this.createOverlay();
 		this.createInstructionBlockElement();
+		this.createOverlay();
 
 		if (params.arrowImagePosition && this.isValidArrowPosition(params.arrowImagePosition)) {
 			this.arrowPosition = params.arrowImagePosition;
@@ -150,12 +146,25 @@ OverlayInstructions.prototype.constructor = function (params) {
 
 	}
 	this.showArrow(this.arrowPosition, false);
-	
 	var eventData = { OverlayInstructionObj : this };
 	$("#InstructionOKButton_" + this.ControlID).on("click", eventData, this.OnInstructionOKButtonClick);
 
 	$("#MoreDetailButton_" + this.ControlID).on("click", eventData, this.ToggleMoreDetail);
-
+	
+	if(params.expandDetails) {
+		this.ToggleMoreDetail({data:eventData});
+	}
+	
+	this.events = {
+			"__on_show_next_instruction__": true,  // @private :used for PageTour
+			"onOkClick": true,
+			"onInitialized": true,
+			"onShow": true,
+			"onHide": true
+		};
+	this.__Is_Active__ = false;
+	var me = this;
+	$(window).on('resize',function() { if(me.__Is_Active__) { me.refreshInstructionBlockPosition(); } });
 };
 
 OverlayInstructions.prototype.ToggleMoreDetail = function (eventData) {
@@ -164,12 +173,12 @@ OverlayInstructions.prototype.ToggleMoreDetail = function (eventData) {
 
 	if (($("#MoreInstructionDetail_" + OverlayInstructionObj.ControlID).is(':visible'))) {
 		$("#MoreDetailButton_" + OverlayInstructionObj.ControlID).text("more...");
+		$("#MoreInstructionDetail_" + OverlayInstructionObj.ControlID).css("display","none");
 	} else {
 		$("#MoreDetailButton_" + OverlayInstructionObj.ControlID).text("less...");
+		$("#MoreInstructionDetail_" + OverlayInstructionObj.ControlID).css("display","block");
 	}
-	$("#MoreInstructionDetail_" + OverlayInstructionObj.ControlID).toggle("fast", function () {
-		OverlayInstructionObj.refreshInstructionBlockPosition();
-	});
+	OverlayInstructionObj.refreshInstructionBlockPosition();
 
 };
 
@@ -178,11 +187,6 @@ OverlayInstructions.prototype.OnInstructionOKButtonClick = function (eventData) 
 	var OverlayInstructionObj = eventData.data.OverlayInstructionObj;
 	OverlayInstructionObj.hide();
 	OverlayInstructionObj.fireEvent("onOkClick");
-	OverlayInstructionObj.fireEvent("__on_show_next_instruction__");
-	//detach event handlers
-	//remove instruction block
-	//remove overlay
-	//destroy
 };
 
 OverlayInstructions.prototype.addListener = function (event, handler) {
@@ -210,13 +214,13 @@ OverlayInstructions.prototype.fireEvent = function (event, eventData) {
 OverlayInstructions.prototype.hideOverlay = function () {
 	"use strict";
 	var overlay = this.getOverlay();
-	overlay.hide();
+	overlay.css("display","none");;
 };
 
 OverlayInstructions.prototype.showOverlay = function () {
 	"use strict";
 	var overlay = this.getOverlay();
-	overlay.show();
+	overlay.css("display","block");
 };
 
 OverlayInstructions.prototype.getID = function () {
@@ -234,6 +238,13 @@ OverlayInstructions.prototype.getOverlay = function () {
 	}
 	return overlay;
 };
+
+OverlayInstructions.prototype.resizeOverlay = function () {
+	var overlay=this.getOverlay();
+	overlay.height($(document).height()-3);
+	overlay.width($(document).width()-3);
+};
+
 
 OverlayInstructions.prototype.createOverlay = function () {
 	"use strict";
@@ -467,6 +478,7 @@ OverlayInstructions.prototype.refreshInstructionBlockPosition = function () {
 		this.calculateInstructionBlockCoOrdinates(this.arrowPosition);
 	}
 	this.setPosition(this.InstructionPositionX, this.InstructionPositionY);
+	this.resizeOverlay();
 };
 
 OverlayInstructions.prototype.hideUnWantedCells = function () {
@@ -497,12 +509,17 @@ OverlayInstructions.prototype.setPosition = function (positionX, positionY) {
 	$('#InstructionBlock_' + this.ControlID).css('left', positionX);
 };
 
-OverlayInstructions.prototype.show = function () {
+OverlayInstructions.prototype.show = function (_Is_Rendered_Within_Tour_) {
 	"use strict";
 	this.showOverlay();
 	this.setArrowImageRotationAngle();
 	this.refreshInstructionBlockPosition();
 	$('#InstructionBlock_' + this.ControlID).show();
+	this.__Is_Active__ = true;
+	if(_Is_Rendered_Within_Tour_) {
+		this.__Is_Rendered_Within_Tour__ = (_Is_Rendered_Within_Tour_ === true) ? true : false;
+	}
+	this.resizeOverlay();
 	this.fireEvent("onShow");
 };
 
@@ -522,7 +539,13 @@ OverlayInstructions.prototype.hide = function () {
 	"use strict";
 	this.hideOverlay();
 	$('#InstructionBlock_' + this.ControlID).hide();
+	this.__Is_Active__ = false;
 	this.fireEvent("onHide");
+	// if rendered by TourManager, then trigger next instruction event
+	if(this.__Is_Rendered_Within_Tour__) {
+		this.fireEvent("__on_show_next_instruction__");	
+	}
+	this.__Is_Rendered_Within_Tour__ = false;
 };
 
 OverlayInstructions.prototype.setTheme = function (theme) {
@@ -859,13 +882,13 @@ PageTour.prototype.start = function () {
 	var firstInstruction = this.getPageInstructionsList().getFirstInstruction();
 	if (firstInstruction) {
 		this.currentActiveInstruction = firstInstruction;
-		firstInstruction.InstructionObject.show();
+		firstInstruction.InstructionObject.show(true);
 	}
 };
 PageTour.prototype.resume = function () {
 	"use strict";
 	if (this.currentActiveInstruction) {
-		this.currentActiveInstruction.InstructionObject.show();
+		this.currentActiveInstruction.InstructionObject.show(true);
 	}
 };
 
@@ -889,7 +912,7 @@ PageTour.prototype.showNextInstruction = function () {
 	if (this.currentActiveInstruction) {
 		var nextInstruction = this.currentActiveInstruction.nextInstruction;
 		if (nextInstruction) {
-			nextInstruction.InstructionObject.show();
+			nextInstruction.InstructionObject.show(true);
 			this.currentActiveInstruction = nextInstruction;
 		}
 

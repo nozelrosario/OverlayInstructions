@@ -27,24 +27,60 @@
 var ChalkboardTour= new PageTour("ChalkBoard");
 
 //(ID,InstructionString,InstructionDetailsString,targetID,arrowImagePosition,arrowImageURL,posX,posY,arrowImageRotationAngle)
-var inst1 = new OverlayInstructions({ID:"inst1", InstructionString:"Click here to view Notifications",InstructionDetailsString:"<br/> Notifications on New Messages <br/> Even on New Tasks",targetID:"input1"});
-var inst2 = new OverlayInstructions({ID:"inst2",InstructionString:"Click here to view Notifications",InstructionDetailsString:"<br/> Notifications on New Messages <br/> Even on New Tasks",targetID:"input2"});
-var inst3 = new OverlayInstructions({ID:"inst3",InstructionString:"Click here to view Notifications",InstructionDetailsString:"<br/> Notifications on New Messages <br/> Even on New Tasks",targetID:"input3"});
-var inst4 = new OverlayInstructions({ID:"inst4",InstructionString:"Click here to view Notifications",InstructionDetailsString:"<br/> Notifications on New Messages <br/> Even on New Tasks",targetID:"input4"});
-var inst5 = new OverlayInstructions({ID:"inst5",InstructionString:"Click here to view Notifications",InstructionDetailsString:"<br/> Notifications on New Messages <br/> Even on New Tasks",targetID:"input5",arrowImagePosition:"W"});
-var inst6 = new OverlayInstructions({ID:"inst6",InstructionString:"Click here to view Notifications",InstructionDetailsString:"<br/> Notifications on New Messages <br/> Even on New Tasks",targetID:"input6",arrowImagePosition:"E"});
-var inst7 = new OverlayInstructions({ID:"inst7",InstructionString:"Click here to view Notifications",InstructionDetailsString:"<br/> Notifications on New Messages <br/> Even on New Tasks",targetID:"input7",arrowImagePosition:"N"});
-var inst8 = new OverlayInstructions({ID:"inst8",InstructionString:"Click here to view Notifications",InstructionDetailsString:"<br/> Notifications on New Messages <br/> Even on New Tasks",targetID:"input8",arrowImagePosition:"S"});
+var inst1 = new OverlayInstructions({ID:"inst1",
+									 InstructionString:"Instruction Pointing to Button 1",
+									 InstructionDetailsString:"<br/> This Instruction block is automatically positioned based on the Target element i.e Button 1<br/> Other all the confgurations are defaults",
+									 targetID:"input1"});
+var inst2 = new OverlayInstructions({ID:"inst2",
+									InstructionString:"Instruction Pointing to Button 2",
+									InstructionDetailsString:"<br/> This Instruction block is automatically positioned based on the Target element i.e Button 2<br/> Other all the confgurations are defaults",
+									targetID:"input2"});
+var inst3 = new OverlayInstructions({ID:"inst3",
+									InstructionString:"Instruction Pointing to Button 3",
+									InstructionDetailsString:"<br/> This Instruction block is automatically positioned based on the Target element i.e Button 3<br/> Other all the confgurations are defaults",
+									targetID:"input3"});
+var inst4 = new OverlayInstructions({ID:"inst4",
+									InstructionString:"Instruction Pointing to Button 4",
+									InstructionDetailsString:"<br/> This Instruction block is automatically positioned based on the Target element i.e Button 4<br/> Other all the confgurations are defaults",
+									targetID:"input4"});
+var inst5 = new OverlayInstructions({ID:"inst5",
+									InstructionString:"Instruction Pointing to Button 5 & Arrow pointing West",
+									InstructionDetailsString:"<br/> This Instruction block is explicitly positioned based on the Target element i.e Button 5 & the desired arrow direction i.e West <br/> Other all the confgurations are defaults & the X,Y position of the Block is auto calculated",
+									targetID:"input5",
+									arrowImagePosition:"W"});
+var inst6 = new OverlayInstructions({ID:"inst6",
+									InstructionString:"Instruction Pointing to Button 6 & Arrow pointing East",
+									InstructionDetailsString:"<br/> This Instruction block is explicitly positioned based on the Target element i.e Button 6 & the desired arrow direction i.e East <br/> Other all the confgurations are defaults & the X,Y position of the Block is auto calculated",
+									targetID:"input6",
+									arrowImagePosition:"E"});
+var inst7 = new OverlayInstructions({ID:"inst7",
+									InstructionString:"Instruction Pointing to Button 7 & Arrow pointing North",
+									InstructionDetailsString:"<br/> This Instruction block is explicitly positioned based on the Target element i.e Button 7 & the desired arrow direction i.e North <br/> Other all the confgurations are defaults & the X,Y position of the Block is auto calculated",
+									targetID:"input7",
+									arrowImagePosition:"N"});
+var inst8 = new OverlayInstructions({ID:"inst8",
+									InstructionString:"Instruction Pointing to Button 8 & Arrow pointing South",
+									InstructionDetailsString:"<br/> This Instruction block is explicitly positioned based on the Target element i.e Button 8 & the desired arrow direction i.e South <br/> Other all the confgurations are defaults & the X,Y position of the Block is auto calculated",
+									targetID:"input8",
+									arrowImagePosition:"S"});
 
-		var centerScreenY = $(window).height()/4;
-		var centerScreenX = $(window).width()/3;
-var inst9 = new OverlayInstructions({ID:"inst9",InstructionString:"Click here to view Notifications",InstructionDetailsString:"<br/> Notifications on New Messages <br/> Even on New Tasks",arrowImagePosition:"S",posX:centerScreenX,posY:centerScreenY,arrowImageRotationAngle:0});
-inst9.showArrow("N",true);
-inst9.showArrow("E",true);
+var centerScreenY = "12%";//$(window).height()/4;
+var centerScreenX = "25%"; //$(window).width()/4;
+var inst9 = new OverlayInstructions({ID:"inst9",
+									InstructionString:"You are about to start the Tour",
+									InstructionDetailsString:"<ul><li> This instruction Block has multiple Arrows & initial Arrow position is set to South</li><li> And is positioned explicitly on the center of screen, i.e X,Y position of the block is explicitly set </li><li> The onOKClick event is set to trigger the Start of the tour</li></ul>",									
+									arrowImagePosition:"S",
+									posX:centerScreenX,
+									posY:centerScreenY,
+									arrowImageRotationAngle:0,
+									expandDetails:true });
+inst9.showArrow("N",true);  // Add explicit arrows to Instruction Block
+inst9.showArrow("E",true);  // Add multiple
 inst9.showArrow("W",true);
-inst9.addListener("onOkClick",function() { ChalkboardTour.start();  });
+inst9.addListener("onOkClick",function() { ChalkboardTour.start();  });  // Add a onevent listener to start the tour
 
 
+// Create a Page Tour of all Instructions 
 ChalkboardTour.add(inst1);
 ChalkboardTour.add(inst2);
 ChalkboardTour.add(inst3);

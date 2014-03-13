@@ -50,7 +50,7 @@ float:left;
 margin-left:10px;
 color:white; 
 font-family:cursive;
-font-size: 12pt;
+font-size: 1.5em;
 }
 
 .InstructionBlock.ChalkBoard .InstructionOKButton {
@@ -79,5 +79,15 @@ float:left;
 margin-left:10px;
 color:white; 
 font-family:cursive;
-font-size: 10pt;
+font-size: 1em;
+}
+
+.InstructionBlock.ChalkBoard .MoreDetailButton, .InstructionBlock.ChalkBoard .MoreDetailButton:visited {
+background-image: url('arrowImages/ChalkBoard/line.png');
+background-repeat:no-repeat;
+width: 100%;
+height: 15px;
+text-align: right;
+padding-top: 10px;
+color: lightblue;
 }
