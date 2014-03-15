@@ -39,6 +39,7 @@ If you are interested in customizing the styles/images of your Instructions you 
 ```
 
 OverlayInstructions constructor supports multiple config.  options, Following is the listing :
+
 | Name| DataType | Default  | Required | Description|
 |:-----------|:-------------:|:-----:|:-----:|:-----:|
 | ID  | String | - | YES | Unique ID of the Instruction Widget.|
