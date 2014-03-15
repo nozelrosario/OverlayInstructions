@@ -6,6 +6,7 @@
 <script type="text/javascript" src="jquery-2.0.3.js"></script>
 <script type="text/javascript" src="jquery-plugins.js"></script>
 <script type="text/javascript" src="OverlayInstructions.js"></script>
+<script type="text/javascript" src="PageTour.js"></script>
 </head>
 <body>
 <form id="form1" class="" >
@@ -64,7 +65,7 @@ var inst8 = new OverlayInstructions({ID:"inst8",
 									targetID:"input8",
 									arrowImagePosition:"S"});
 
-var centerScreenY = "12%";//$(window).height()/4;
+var centerScreenY = "0";//$(window).height()/4;
 var centerScreenX = "25%"; //$(window).width()/4;
 var inst9 = new OverlayInstructions({ID:"inst9",
 									InstructionString:"You are about to start the Tour",
@@ -77,7 +78,7 @@ var inst9 = new OverlayInstructions({ID:"inst9",
 inst9.showArrow("N",true);  // Add explicit arrows to Instruction Block
 inst9.showArrow("E",true);  // Add multiple
 inst9.showArrow("W",true);
-inst9.addListener("onOkClick",function() { ChalkboardTour.start();  });  // Add a onevent listener to start the tour
+inst9.addEventListener("onOkClick",function() { ChalkboardTour.start();  });  // Add a onevent listener to start the tour
 
 
 // Create a Page Tour of all Instructions 

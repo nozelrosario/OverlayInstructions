@@ -1,4 +1,20 @@
 
+function intersection(x, y) {
+        x.sort();
+        y.sort();
+        var i = j = 0;
+        var ret = [];
+        while (i < x.length && j < y.length) {
+            if (x[i] < y[j]) i++;
+            else if (y[j] < x[i]) j++;
+            else {
+                ret.push(i);
+                i++, j++;
+            }
+        }
+        return ret;
+}
+
 /**
  * Set/UnSet Visiblity:hidden 
  * */

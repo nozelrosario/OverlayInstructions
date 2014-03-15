@@ -61,7 +61,8 @@ TargetElement.prototype.getHeight = function () {
  *           arrowImageURL: URL of a custom image that should be rendered instead of default arrow image,
  *           posX: default X-coordinate of the Instruction Block,
  *           posY: default Y-coordinate of the Instruction Block,
- *           arrowImageRotationAngle: Rotation angle for the arrow image }
+ *           arrowImageRotationAngle: Rotation angle for the arrow image,
+ *           expandDetails: show details expanded by default }
  */
 
 function OverlayInstructions(params) {
@@ -79,7 +80,17 @@ OverlayInstructions.prototype.deltaY = 5;  // 5px vertical offset.
 OverlayInstructions.prototype.InstructionBlockElment = null;
 OverlayInstructions.prototype.InstructionOverlay = null;
 OverlayInstructions.prototype.arrowPositionFixed = false;
-OverlayInstructions.prototype.arrowPosition = "W"; // {"E","W","S","N","NE","NW","SE","SW"}
+OverlayInstructions.prototype.arrowPosition = "W";  // Primary arrow position{"E","W","S","N","NE","NW","SE","SW"}
+OverlayInstructions.prototype.arrowsActive = {		// Secondary arrows that are active via. showArrow#
+		"E" : false,
+		"W" : false,
+		"S" : false,
+		"N"  : false,
+		"NE" : false,
+		"NW" : false,
+		"SE" : false,
+		"SW" : false
+	};
 OverlayInstructions.prototype.arrowImage = "";
 OverlayInstructions.prototype.horizontalArrowImageHeight = 75;  //px
 OverlayInstructions.prototype.horizontalArrowImageWidth = 150;  //px
@@ -116,7 +127,7 @@ OverlayInstructions.prototype.constructor = function (params) {
 		this.createOverlay();
 
 		if (params.arrowImagePosition && this.isValidArrowPosition(params.arrowImagePosition)) {
-			this.arrowPosition = params.arrowImagePosition;
+			this.setArrowPosition(params.arrowImagePosition);
 			this.arrowPositionFixed = true;
 			if (params.arrowImageURL) {
 				this.setArrowImage(params.arrowImageURL);
@@ -124,8 +135,6 @@ OverlayInstructions.prototype.constructor = function (params) {
 		} else {
 			this.autoSetArrowPosition();
 		}
-
-		this.hideUnWantedCells();
 
 		if (params.posX && params.posY) {
 			this.InstructionPositionFixed = true;
@@ -138,23 +147,23 @@ OverlayInstructions.prototype.constructor = function (params) {
 		
 		if(params.arrowImageRotationAngle) {
 			this.arrowImageRotationFixed = true;
-			this.arrowImageRotationAngle = param.arrowImageRotationAngl;
+			this.arrowImageRotationAngle = params.arrowImageRotationAngle;
 		} else {
 			this.arrowImageRotationFixed = false;
 		}
-		
 
-	}
-	this.showArrow(this.arrowPosition, false);
-	var eventData = { OverlayInstructionObj : this };
-	$("#InstructionOKButton_" + this.ControlID).on("click", eventData, this.OnInstructionOKButtonClick);
+	    this.showArrow(this.getArrowPosition(), false);
+	    var eventData = { OverlayInstructionObj : this };
+	    $("#InstructionOKButton_" + this.ControlID).on("click", eventData, this.OnInstructionOKButtonClick);
 
-	$("#MoreDetailButton_" + this.ControlID).on("click", eventData, this.ToggleMoreDetail);
+	    $("#MoreDetailButton_" + this.ControlID).on("click", eventData, this.ToggleMoreDetail);
 	
-	if(params.expandDetails) {
-		this.ToggleMoreDetail({data:eventData});
+	    if(params.expandDetails) {
+		   this.ToggleMoreDetail({data:eventData});
+	    }
+	    
+	    
 	}
-	
 	this.events = {
 			"__on_show_next_instruction__": true,  // @private :used for PageTour
 			"onOkClick": true,
@@ -162,6 +171,7 @@ OverlayInstructions.prototype.constructor = function (params) {
 			"onShow": true,
 			"onHide": true
 		};
+	// Re-position on window re-size
 	this.__Is_Active__ = false;
 	var me = this;
 	$(window).on('resize',function() { if(me.__Is_Active__) { me.refreshInstructionBlockPosition(); } });
@@ -189,14 +199,14 @@ OverlayInstructions.prototype.OnInstructionOKButtonClick = function (eventData) 
 	OverlayInstructionObj.fireEvent("onOkClick");
 };
 
-OverlayInstructions.prototype.addListener = function (event, handler) {
+OverlayInstructions.prototype.addEventListener = function (event, handler) {
 	"use strict";
 	if (this.events[event]) {
 		this.events[event] = handler;
 	}
 };
 
-OverlayInstructions.prototype.removeListener = function (event) {
+OverlayInstructions.prototype.removeEventListener = function (event) {
 	"use strict";
 	if (this.events[event]) {
 		this.events[event] = true;
@@ -308,14 +318,14 @@ OverlayInstructions.prototype.autoSetArrowPosition = function () {
 			// W, NW,SW
 			if (targetElementPositionY2 > horizontal_InstructionBlockHeight) {
 				//position = SW
-				this.arrowPosition = "SW";
+				this.setArrowPosition("SW");
 
 			} else if (targetElementPositionY2 > (horizontal_InstructionBlockHeight / 2)) {  // if space above target is greater than 1/2 of inst_block height
 				// position = W
-				this.arrowPosition = "W";
+				this.setArrowPosition("W");
 			} else {
 				//position = NW
-				this.arrowPosition = "NW";
+				this.setArrowPosition("NW");
 			}
 
 		} else if ((horizontal_InstructionBlockWidth + arrowToTargetPadding) <= targetElementPositionX1) {   // if left possible
@@ -324,14 +334,14 @@ OverlayInstructions.prototype.autoSetArrowPosition = function () {
 			// E,NE,SE
 			if (targetElementPositionY1 > horizontal_InstructionBlockHeight) {
 				//position = SE
-				this.arrowPosition = "SE";
+				this.setArrowPosition("SE");
 
 			} else if (targetElementPositionY1 > (horizontal_InstructionBlockHeight / 2)) {  // if space above target is greater than 1/2 of inst_block height
 				// position = E
-				this.arrowPosition = "E";
+				this.setArrowPosition("E");
 			} else {
 				//position = NE	
-				this.arrowPosition = "NE";
+				this.setArrowPosition("NE");
 			}
 
 		} else if ((vertical_InstructionBlockHeight + arrowToTargetPadding) <= targetElementPositionY1) { //determine block above or below target element
@@ -341,14 +351,14 @@ OverlayInstructions.prototype.autoSetArrowPosition = function () {
 			// S,SW,SE
 			if (targetElementPositionX1 > vertical_InstructionBlockWidth) {
 				//position = SE
-				this.arrowPosition = "SE";
+				this.setArrowPosition("SE");
 
 			} else if (targetElementPositionX1 > (vertical_InstructionBlockWidth / 2)) {  // if space above target is greater than 1/2 of inst_block height
 				// position = S
-				this.arrowPosition = "S";
+				this.setArrowPosition("S");
 			} else {
 				//position = SW				
-				this.arrowPosition = "SW";
+				this.setArrowPosition("SW");
 			}
 
 		} else if ((targetElementPositionY2 + vertical_InstructionBlockHeight) < screenHeight) {
@@ -357,23 +367,31 @@ OverlayInstructions.prototype.autoSetArrowPosition = function () {
 			// N,NE,NW
 			if (targetElementPositionX1 > vertical_InstructionBlockWidth) {
 				//position = NE
-				this.arrowPosition = "NE";
+				this.setArrowPosition("NE");
 
 			} else if (targetElementPositionX1 > (vertical_InstructionBlockWidth / 2)) {  // if space below target is greater than 1/2 of inst_block height
 				// position = N
-				this.arrowPosition = "N";
+				this.setArrowPosition("N");
 			} else {
 				//position = NW		
-				this.arrowPosition = "NW";
+				this.setArrowPosition("NW");
 			}
 		}
 
 	} else {
 		//	target element not found/defined , then take defaults
-		this.arrowPosition = "NW";
+		this.setArrowPosition("NW");
 	}
 };
 
+OverlayInstructions.prototype.setArrowPosition = function(arrowPosition) {
+	this.arrowPosition = arrowPosition;
+	this.arrowsActive[arrowPosition] = true;
+};
+
+OverlayInstructions.prototype.getArrowPosition = function() {
+	return this.arrowPosition;
+};
 
 OverlayInstructions.prototype.calculateInstructionBlockCoOrdinates = function (arrowPosition) {
     "use strict";
@@ -468,36 +486,115 @@ OverlayInstructions.prototype.calculateInstructionBlockCoOrdinates = function (a
 
 	this.InstructionPositionX = (instructionBlockX < 0) ? 0 : instructionBlockX;
 	this.InstructionPositionY = (instructionBlockY < 0) ? 0 : instructionBlockY;
-	this.setArrowImageRotationAngle(arrowImageRotationAngle);
+	this.setArrowImageRotationAngle(arrowImageRotationAngle); //TODO: set Rotation angle & rotate the images instead of using separate images
 
 };
 
 OverlayInstructions.prototype.refreshInstructionBlockPosition = function () {
 	"use strict";
 	if(!this.InstructionPositionFixed && this.targetElement) {
-		this.calculateInstructionBlockCoOrdinates(this.arrowPosition);
+		this.calculateInstructionBlockCoOrdinates(this.getArrowPosition());
 	}
 	this.setPosition(this.InstructionPositionX, this.InstructionPositionY);
 	this.resizeOverlay();
 };
 
+
+OverlayInstructions.prototype.getObsoleteArrowPositions =function (arrowPosition) {
+	var unWantedArrowPositions = [];
+	switch(arrowPosition) {
+	case "NW":
+		unWantedArrowPositions = ["N","NE","E","SE","S","SW","W"];
+		break;
+
+	case "N":
+		unWantedArrowPositions = ["NW","NE","E","SE","S","SW","W"];
+		break;
+
+	case "NE":
+		unWantedArrowPositions = ["NW","E","SE","S","SW","W"];
+		break;
+
+	case "E":
+		unWantedArrowPositions = ["NW","N","NE","SE","S","SW","W"];
+		break;
+
+	case "SE":
+		unWantedArrowPositions = ["NW","N","NE","E","SW","W"];
+		break;
+
+	case "S":
+		unWantedArrowPositions = ["NW","N","NE","E","SE","SW","W"];
+		break;
+
+	case "SW":
+		unWantedArrowPositions = ["NW","N","NE","E","SE","S","W"];
+		break;
+
+	case "W":
+		unWantedArrowPositions = ["NW","N","NE","E","SE","S","SW"];
+		break;
+
+	default:
+		unWantedArrowPositions = ["NW","N","NE","E","SE","S","SW","W"];
+
+	}
+	
+	return unWantedArrowPositions;
+};
+
+OverlayInstructions.prototype.getAllObsoleteArrowPositions = function () {
+	var position,arrowPositionsToHide;
+	for (position in this.arrowsActive) {
+		if (this.arrowsActive.hasOwnProperty(position)) {
+		    if(this.arrowsActive[position] === true) {
+		    	if(arrowPositionsToHide){
+		    		arrowPositionsToHide = intersection(arrowPositionsToHide,this.getObsoleteArrowPositions(position));
+		    	} else {
+		    		arrowPositionsToHide = this.getObsoleteArrowPositions(position);
+		    	}
+		    }
+		}
+	}
+	return arrowPositionsToHide;
+};
+
+OverlayInstructions.prototype.hideArrowCells = function (arrowPositionsToHide) {
+	var i;
+	for (i=0 ; i < arrowPositionsToHide.length ; i++) {
+			$('#Cell-' + arrowPositionsToHide[i] + '_' + this.ControlID).css("display","none");
+	}
+};
+
 OverlayInstructions.prototype.hideUnWantedCells = function () {
 	"use strict";
+	var position,arrowPositionsToHide;
 	if(!this.InstructionPositionFixed) {
-		if ((this.arrowPosition.indexOf("S") !== -1) || this.arrowPosition === "W" || this.arrowPosition === "E") {
+		// reset the display of all arrow cells
+		for (position in this.arrowsActive) {
+			if (this.arrowsActive.hasOwnProperty(position)) {
+				$('#Cell-' + position + '_' + this.ControlID).css("display","table-cell");
+			}
+		}
+		// hide the unwanted cells
+		arrowPositionsToHide = this.getAllObsoleteArrowPositions();
+		this.hideArrowCells(arrowPositionsToHide);
+		/*if ((arrowposition.indexOf("S") !== -1) || arrowposition === "W" || arrowposition === "E") {
 			// hide 1st row TopRow_
 			//$('#TopRow_'+ this.ControlID).hide();
 			$('#Cell-NW_' + this.ControlID).hide();
 			$('#Cell-N_' + this.ControlID).hide();
 			$('#Cell-NE_' + this.ControlID).hide();
 		}
-		if (this.arrowPosition.indexOf("E") !== -1) {
+		if (arrowposition.indexOf("E") !== -1) {
 			//hide 1st column Cell-NW_inst1,Cell-W_inst1,Cell-SW_inst1
 			$('#Cell-NW_' + this.ControlID).hide();
 			$('#Cell-W_' + this.ControlID).hide();
 			$('#Cell-SW_' + this.ControlID).hide();
-		}
+		}*/
 	}
+	
+	
 };
 
 OverlayInstructions.prototype.setPosition = function (positionX, positionY) {
@@ -512,7 +609,7 @@ OverlayInstructions.prototype.setPosition = function (positionX, positionY) {
 OverlayInstructions.prototype.show = function (_Is_Rendered_Within_Tour_) {
 	"use strict";
 	this.showOverlay();
-	this.setArrowImageRotationAngle();
+	this.setArrowImageRotationAngle();  //TODO : Re-Check the implementation, is this necessary ?? 
 	this.refreshInstructionBlockPosition();
 	$('#InstructionBlock_' + this.ControlID).show();
 	this.__Is_Active__ = true;
@@ -529,10 +626,10 @@ OverlayInstructions.prototype.destroy = function () {
 	$("#MoreDetailButton_" + this.ControlID).off("click");
 	$('#InstructionBlock_' + this.ControlID).remove();
 	this.getOverlay().remove();
-	this.removeListener("onOkClick");
-	this.removeListener("onInitialized");
-	this.removeListener("onShow");
-	this.removeListener("onHide");
+	this.removeEventListener("onOkClick");
+	this.removeEventListener("onInitialized");
+	this.removeEventListener("onShow");
+	this.removeEventListener("onHide");
 };
 
 OverlayInstructions.prototype.hide = function () {
@@ -564,6 +661,7 @@ OverlayInstructions.prototype.hideAllArrows = function () {
 	var position;
 	for (position in this.arrowStyles) {
 		if (this.arrowStyles.hasOwnProperty(position)) {
+			this.arrowsActive[position] = false;
 		    $('#Cell-' + position + '_' + this.ControlID).invisible();
 		}
 	}
@@ -572,33 +670,40 @@ OverlayInstructions.prototype.hideAllArrows = function () {
 
 OverlayInstructions.prototype.showArrow = function (newArrowPosition, keepCurrentArrow) {
 	"use strict";
+	var arrowPosition = this.getArrowPosition();
 	if (newArrowPosition && this.isValidArrowPosition(newArrowPosition)) {
 		if (!keepCurrentArrow) {
 			this.hideAllArrows();
-		} else {
+			this.setArrowPosition(newArrowPosition);
+		} /*else {
 			// Adjust the hidden cells , so the width is compensated and arrow appears in right cell
-			if ((this.arrowPosition.indexOf("S") !== -1) || this.arrowPosition === "W" || this.arrowPosition === "E") {
+			if ((arrowPosition.indexOf("S") !== -1) || arrowPosition === "W" || arrowPosition === "E") {
 				$('#Cell-NW_' + this.ControlID).css("display","table-cell");
 				$('#Cell-N_' + this.ControlID).css("display","table-cell");
 				$('#Cell-NE_' + this.ControlID).css("display","table-cell");
 			}
-			if (this.arrowPosition.indexOf("E") !== -1) {
+			if (arrowPosition.indexOf("E") !== -1) {
 				$('#Cell-NW_' + this.ControlID).css("display","table-cell");
 				$('#Cell-W_' + this.ControlID).css("display","table-cell");
 				$('#Cell-SW_' + this.ControlID).css("display","table-cell");
 			}
-		}
-		this.arrowPosition = newArrowPosition;
-		$('#Cell-' + newArrowPosition + '_' + this.ControlID).visible();		
+		}*/
+		$('#Cell-' + newArrowPosition + '_' + this.ControlID).visible();
+		this.arrowsActive[newArrowPosition] = true;
+		this.hideUnWantedCells();
 	}
 };
 
-OverlayInstructions.prototype.setArrowImageRotationAngle = function (arrowImageRotationAngle) {
+OverlayInstructions.prototype.setArrowImageRotationAngle = function (arrowImageRotationAngle,arrowImagePosition) {
 	"use strict";
 	if (arrowImageRotationAngle && !this.arrowImageRotationFixed) {
 		this.arrowImageRotationAngle = arrowImageRotationAngle;
 	}
-	this.rotateArrowImage(this.arrowImageRotationAngle, this.arrowPosition);
+	if(arrowImagePosition && this.isValidArrowPosition(arrowImagePosition)) {
+		this.rotateArrowImage(this.arrowImageRotationAngle, arrowImagePosition);
+	} else {
+		this.rotateArrowImage(this.arrowImageRotationAngle, this.getArrowPosition());
+	}
 };
 
 OverlayInstructions.prototype.rotateArrowImage = function (arrowImageRotationAngle, arrowImagePosition) {
@@ -618,8 +723,8 @@ OverlayInstructions.prototype.setArrowImage = function (arrowImageURL, arrowImag
 	} else {
 		if (arrowImageURL) {
 			// change the url in respective src of the image tag corresponding to the current position of arrow , i.e this.arrowPosition
-			$('#ArrowImage_' + this.arrowPosition + '_Div_' + this.ControlID).css('background-image', arrowImageURL);
-			this.arrowStyles[this.arrowPosition] = arrowImageURL;
+			$('#ArrowImage_' + this.getArrowPosition() + '_Div_' + this.ControlID).css('background-image', arrowImageURL);
+			this.arrowStyles[this.getArrowPosition()] = arrowImageURL;
 		}
 	}
 };
@@ -725,203 +830,3 @@ OverlayInstructions.prototype.createInstructionBlockElement = function () {
 	$("body").append(InstructionBlock);
 	return InstructionBlock;
 };
-
-
-/**
- * InstructionLink
- * Holds instruction Block instance in the chain of Instruction Blocks
- */
-function InstructionLink(instructionObject) {
-	"use strict";
-    this.constructor(instructionObject);
-}
-
-InstructionLink.prototype.constructor = function (instructionObject) {
-	"use strict";
-	this.InstructionObject = instructionObject;
-	this.ID = instructionObject.getID();
-	this.nextInstruction = null;
-	this.previousInstruction = null;
-};
-
-
-/**
- * InstructionList
- * Holds a collection (linked list) of all the Instruction Blocks in a single Page Tour
- * 
- */
-function InstructionsList() {
-    "use strict";
-	this.constructor();
-}
-InstructionsList.prototype.constructor = function () {
-	"use strict";
-	this.firstInstruction = null;
-	this.lastInstruction = null;
-	this.size = 0;
-};
-
-InstructionsList.prototype.getFirstInstruction = function () {
-	"use strict";
-	return this.firstInstruction;
-};
-
-InstructionsList.prototype.getLastInstruction = function () {
-	"use strict";
-	return this.lastInstruction;
-};
-
-InstructionsList.prototype.getSize = function () {
-	"use strict";
-	return this.size;
-};
-
-InstructionsList.prototype.add = function (instructionObject) {
-    "use strict";
-	var newInstruction = new InstructionLink(instructionObject);
-	newInstruction.InstructionObject = instructionObject;
-
-	if (this.firstInstruction === null) {
-		this.firstInstruction = newInstruction;
-		this.lastInstruction = newInstruction;
-	} else {
-		this.lastInstruction.nextInstruction = newInstruction;
-		this.lastInstruction = newInstruction;
-	}
-	this.size = this.size + 1;   // increment the size
-};
-
-InstructionsList.prototype.addAfter = function (ID, instructionObject) {
-	"use strict";
-	//TODO : implement inserting of instructions in-between sequence
-};
-
-InstructionsList.prototype.remove =  function (ID) {
-	"use strict";
-	var currentInstruction = this.firstInstruction;
-
-	if (this.size === 0) {
-		return;
-	}
-
-	var wasDeleted = false;
-
-	/* Are we deleting the first node? */
-	if (ID === currentInstruction.ID) {
-
-		/* Only one node in list, be careful! */
-		if (currentInstruction.nextInstruction === null) {
-			this.firstInstruction.InstructionObject = null;
-			this.firstInstruction = null;
-			this.lastInstruction = null;
-			this.size = this.size - 1;
-			return;
-		}
-
-		currentInstruction.InstructionObject = null;
-		currentInstruction = currentInstruction.nextInstruction;
-		this.firstInstruction = currentInstruction;
-		this.size = this.size - 1;
-		return;
-	}
-
-	while (true) {
-		/* If end of list, stop */
-		if (currentInstruction === null) {
-			wasDeleted = false;
-			break;
-		}
-
-		/* Check if the data of the next is what we're looking for */
-		var nextInstruction = currentInstruction.nextInstruction;
-		if (nextInstruction !== null) {
-			if (ID === nextInstruction.ID) {
-
-				/* Found the right one, loop around the node */
-				var nextNextInstruction = nextInstruction.nextInstruction;
-				currentInstruction.nextInstruction = nextNextInstruction;
-
-				nextInstruction = null;
-				wasDeleted = true;
-				break;
-			}
-		}
-
-		currentInstruction = currentInstruction.nextInstruction;
-	}
-
-	if (wasDeleted) {
-		this.size = this.size - 1;
-	}
-};
-
-/**
- * PageTour
- * Page Tour consisting of instruction blocks along with sequential Navigation 
- */
-function PageTour(name) {
-	"use strict";
-    this.constructor(name);
-}
-PageTour.prototype.constructor = function (name) {
-	"use strict";
-	this.name = name;
-};
-PageTour.prototype.name = "";
-PageTour.prototype.pageInstructionsList = null;
-PageTour.prototype.currentActiveInstruction = null;
-PageTour.prototype.getPageInstructionsList = function () {
-	"use strict";
-	if (!this.pageInstructionsList) {
-		this.pageInstructionsList = new InstructionsList();
-	}
-	return this.pageInstructionsList;
-};
-PageTour.prototype.start = function () {
-	"use strict";
-	var firstInstruction = this.getPageInstructionsList().getFirstInstruction();
-	if (firstInstruction) {
-		this.currentActiveInstruction = firstInstruction;
-		firstInstruction.InstructionObject.show(true);
-	}
-};
-PageTour.prototype.resume = function () {
-	"use strict";
-	if (this.currentActiveInstruction) {
-		this.currentActiveInstruction.InstructionObject.show(true);
-	}
-};
-
-PageTour.prototype.suspend = function () {
-	"use strict";
-	if (this.currentActiveInstruction) {
-		this.currentActiveInstruction.InstructionObject.hide();
-	}
-};
-
-PageTour.prototype.stop = function () {
-	"use strict";
-	if (this.currentActiveInstruction) {
-		this.currentActiveInstruction.InstructionObject.hide();
-		var firstInstruction = this.getPageInstructionsList().getFirstInstruction();
-		this.currentActiveInstruction = firstInstruction;
-	}
-};
-PageTour.prototype.showNextInstruction = function () {
-	"use strict";
-	if (this.currentActiveInstruction) {
-		var nextInstruction = this.currentActiveInstruction.nextInstruction;
-		if (nextInstruction) {
-			nextInstruction.InstructionObject.show(true);
-			this.currentActiveInstruction = nextInstruction;
-		}
-
-	}
-};
-PageTour.prototype.add = function (overlayInstructionObject) {
-	"use strict";
-	var me = this;
-	overlayInstructionObject.addListener("__on_show_next_instruction__", function () { me.showNextInstruction(); });
-	this.getPageInstructionsList().add(overlayInstructionObject);
-};
-
