@@ -39,18 +39,18 @@ If you are interested in customizing the styles/images of your Instructions you 
 ```
 
 OverlayInstructions constructor supports multiple config.  options, Following is the listing :
-| Name        | DataType           | Default  | Required | Description
+| Name| DataType | Default  | Required | Description|
 | :----------- |:-------------:| :-----:|:-----:|:-----:|
-| ID  | String | - | YES | Unique ID of the Instruction Widget.
-|InstructionString | String | - | Optional |  Instruction Title Text to be rendered
-| InstructionDetailsString | String | - | Optional | Instruction Detail Text to be rendered 
-|targetID |String|-|Optional|"ID" of the target HTML element for which the Instruction is displayed
-|arrowImagePosition|String|"W"|Optional|String indication the direction that the arrow should point. Possible values [E,W,S,N,NE,NW,SE,SW]
-|arrowImageURL|String (url) | - | Optional | URL of a custom image that should be rendered instead of default arrow image
-|posX |Numeric (px or %) | - | Optional | default X-coordinate of the Instruction Block
-|posY|Numeric (px or %) | - | Optional | default Y-coordinate of the Instruction Block
-|arrowImageRotationAngle|Numeric| - | Optional | Rotation angle for the arrow image
-|expandDetails|Bool| false | Optional| Boolean indicating whether to expand the Instruction Details by default
+| ID  | String | - | YES | Unique ID of the Instruction Widget.|
+|InstructionString | String | - | Optional |  Instruction Title Text to be rendered|
+| InstructionDetailsString | String | - | Optional | Instruction Detail Text to be rendered |
+|targetID |String|-|Optional|"ID" of the target HTML element for which the Instruction is displayed|
+|arrowImagePosition|String|"W"|Optional|String indication the direction that the arrow should point. Possible values [E,W,S,N,NE,NW,SE,SW]|
+|arrowImageURL|String (url) | - | Optional | URL of a custom image that should be rendered instead of default arrow image|
+|posX |Numeric (px or %) | - | Optional | default X-coordinate of the Instruction Block|
+|posY|Numeric (px or %) | - | Optional | default Y-coordinate of the Instruction Block|
+|arrowImageRotationAngle|Numeric| - | Optional | Rotation angle for the arrow image|
+|expandDetails|Bool| false | Optional| Boolean indicating whether to expand the Instruction Details by default|
 | | | |
 
 2. Call the show() method.
