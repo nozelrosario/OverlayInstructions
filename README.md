@@ -7,6 +7,7 @@ Page Tour is feature which is integrated onto Overlay Instructions library. Page
 
 Demo:
 -------------------------
+http://jsfiddle.net/nozelrosario/JDj7h/1/
 
 
 ScreenShot
