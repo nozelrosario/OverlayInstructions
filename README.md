@@ -39,9 +39,8 @@ If you are interested in customizing the styles/images of your Instructions you 
 ```
 
 OverlayInstructions constructor supports multiple config.  options, Following is the listing :
-
 | Name| DataType | Default  | Required | Description|
-| :----------- |:-------------:| :-----:|:-----:|:-----:|
+|:-----------|:-------------:|:-----:|:-----:|:-----:|
 | ID  | String | - | YES | Unique ID of the Instruction Widget.|
 |InstructionString | String | - | Optional |  Instruction Title Text to be rendered|
 | InstructionDetailsString | String | - | Optional | Instruction Detail Text to be rendered |
@@ -52,7 +51,7 @@ OverlayInstructions constructor supports multiple config.  options, Following is
 |posY|Numeric (px or %) | - | Optional | default Y-coordinate of the Instruction Block|
 |arrowImageRotationAngle|Numeric| - | Optional | Rotation angle for the arrow image|
 |expandDetails|Bool| false | Optional| Boolean indicating whether to expand the Instruction Details by default|
-| | | |
+| | | | | |
 
 2. Call the show() method.
 ```Javascript
