@@ -150,8 +150,8 @@ What's Comming Next
 + Code Re-Factoring [optimize]
 + More Themes
 + Transition Animations
++ Mobile/Touch Friendly  UI
 + etc.....
-+ 
 
 ## License
 
