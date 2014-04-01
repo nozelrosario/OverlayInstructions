@@ -465,7 +465,7 @@ OverlayInstructions.prototype.autoSetArrowPosition = function () {
 		// resultant Horizontal & Vertical height-width of instruction block
 		var horizontal_InstructionBlockHeight, horizontal_InstructionBlockWidth;
 		horizontal_InstructionBlockHeight = (this.horizontalArrowImageHeight > instructionContentHeight) ? this.horizontalArrowImageHeight : instructionContentHeight;
-		horizontal_InstructionBlockWidth = this.arrowImageWidth + instructionContentWidth;
+		horizontal_InstructionBlockWidth = this.horizontalArrowImageWidth + instructionContentWidth;
 
 		var vertical_InstructionBlockHeight, vertical_InstructionBlockWidth;
 		vertical_InstructionBlockHeight = this.verticalArrowImageHeight + instructionContentHeight;
@@ -780,8 +780,18 @@ OverlayInstructions.prototype.show = function (_Is_Rendered_Within_Tour_) {
 			this.__Is_Rendered_Within_Tour__ = (_Is_Rendered_Within_Tour_ === true) ? true : false;
 		}
 		this.resizeOverlay();
+		this.scrollToInstruction();
 		this.fireEvent("onShow");
 	}
+};
+
+OverlayInstructions.prototype.scrollToInstruction = function() {
+	var instructionBlockID = this.getID();
+    topPadding = 100;
+    var moveTo = $("#InstructionBlock_" + instructionBlockID).offset().top - topPadding;
+	$('html, body').stop().animate({
+		scrollTop: moveTo
+		 }, 1000);
 };
 
 OverlayInstructions.prototype.destroy = function () {
