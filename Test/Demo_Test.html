@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link rel="stylesheet" href="../style/OverlayInstructions.css">
-<link rel="stylesheet" href="../style/ChalkBoard.css">
+<link rel="stylesheet" href="../style/style.css">
 <script type="text/javascript" src="../jquery-2.0.3.js"></script>
 <script type="text/javascript" src="../OverlayInstructions.js"></script>
 <script type="text/javascript" src="../PageTour.js"></script>
@@ -10,15 +9,15 @@
 <body>
 <form id="form1" class="" >
 
-	  <button id="input1" type="button" style="position:absolute;left:0px;top:0px;" onclick="inst1.show();">Button 1 (0,0)=>NW</button><br>
-	  <button id="input2" type="button" style="position:absolute;left:80%;top:0px;" onclick="inst2.show();">Button 2 (80%,0)=>NE</button>
-	  <button id="input3" type="button" style="position:absolute;left:0px;top:80%;" onclick="inst3.show();">Button 3 (0,80%)=>SW</button>
-	  <button id="input4" type="button" style="position:absolute;left:80%;top:80%;" onclick="inst4.show();">Button 4 (80%,80%)=>SE</button>
-	  <button id="input5" type="button" style="position:absolute;left:0px;top:40%;" onclick="inst5.show();">Button 5 (0,40%)=>W</button>
-	  <button id="input6" type="button" style="position:absolute;left:80%;top:40%;" onclick="inst6.show();">Button 6 (80%,40%)=>E</button>
-	  <button id="input7" type="button" style="position:absolute;left:40%;top:0px;" onclick="inst7.show();">Button 7 (40%,0)=>N</button>
-	  <button id="input8" type="button" style="position:absolute;left:40%;top:80%;" onclick="inst8.show();">Button 8 (40%,80%)=>S</button>
-	  <button id="input9" type="button" style="position:absolute;left:40%;top:40%;" onclick="inst9.show();">Button 8 (50%,50%)=>ALL</button>
+	  <button id="input1" type="button" style="position:absolute;left:0px;top:0px;" >Button 1 (0,0)=>NW</button><br>
+	  <button id="input2" type="button" style="position:absolute;left:80%;top:0px;" >Button 2 (80%,0)=>NE</button>
+	  <button id="input3" type="button" style="position:absolute;left:0px;top:80%;" >Button 3 (0,80%)=>SW</button>
+	  <button id="input4" type="button" style="position:absolute;left:80%;top:80%;" >Button 4 (80%,80%)=>SE</button>
+	  <button id="input5" type="button" style="position:absolute;left:0px;top:40%;" >Button 5 (0,40%)=>W</button>
+	  <button id="input6" type="button" style="position:absolute;left:80%;top:40%;" >Button 6 (80%,40%)=>E</button>
+	  <button id="input7" type="button" style="position:absolute;left:40%;top:0px;" >Button 7 (40%,0)=>N</button>
+	  <button id="input8" type="button" style="position:absolute;left:40%;top:80%;" >Button 8 (40%,80%)=>S</button>
+	  <button id="input9" type="button" style="position:absolute;left:40%;top:40%;" onclick="ChalkboardTour.show();" >Button 8 (50%,50%)=>ALL</button>
 
 </form>
 
@@ -27,38 +26,38 @@
 var ChalkboardTour= new PageTour("ChalkBoard");
 
 //(ID,InstructionString,InstructionDetailsString,targetID,arrowImagePosition,arrowImageURL,posX,posY,arrowImageRotationAngle)
-var inst1 = new OverlayInstructions({ID:"inst1",
+ChalkboardTour.addInstruction({ID:"inst1",
 									 InstructionString:"Instruction Pointing to Button 1",
 									 InstructionDetailsString:"<br/> This Instruction block is automatically positioned based on the Target element i.e Button 1<br/> Other all the confgurations are defaults",
 									 targetID:"input1"});
-var inst2 = new OverlayInstructions({ID:"inst2",
+ChalkboardTour.addInstruction({ID:"inst2",
 									InstructionString:"Instruction Pointing to Button 2",
 									InstructionDetailsString:"<br/> This Instruction block is automatically positioned based on the Target element i.e Button 2<br/> Other all the confgurations are defaults",
 									targetID:"input2"});
-var inst3 = new OverlayInstructions({ID:"inst3",
+ChalkboardTour.addInstruction({ID:"inst3",
 									InstructionString:"Instruction Pointing to Button 3",
 									InstructionDetailsString:"<br/> This Instruction block is automatically positioned based on the Target element i.e Button 3<br/> Other all the confgurations are defaults",
 									targetID:"input3"});
-var inst4 = new OverlayInstructions({ID:"inst4",
+ChalkboardTour.addInstruction({ID:"inst4",
 									InstructionString:"Instruction Pointing to Button 4",
 									InstructionDetailsString:"<br/> This Instruction block is automatically positioned based on the Target element i.e Button 4<br/> Other all the confgurations are defaults",
 									targetID:"input4"});
-var inst5 = new OverlayInstructions({ID:"inst5",
+ChalkboardTour.addInstruction({ID:"inst5",
 									InstructionString:"Instruction Pointing to Button 5 & Arrow pointing West",
 									InstructionDetailsString:"<br/> This Instruction block is explicitly positioned based on the Target element i.e Button 5 & the desired arrow direction i.e West <br/> Other all the confgurations are defaults & the X,Y position of the Block is auto calculated",
 									targetID:"input5",
 									arrowImagePosition:"W"});
-var inst6 = new OverlayInstructions({ID:"inst6",
+ChalkboardTour.addInstruction({ID:"inst6",
 									InstructionString:"Instruction Pointing to Button 6 & Arrow pointing East",
 									InstructionDetailsString:"<br/> This Instruction block is explicitly positioned based on the Target element i.e Button 6 & the desired arrow direction i.e East <br/> Other all the confgurations are defaults & the X,Y position of the Block is auto calculated",
 									targetID:"input6",
 									arrowImagePosition:"E"});
-var inst7 = new OverlayInstructions({ID:"inst7",
+ChalkboardTour.addInstruction({ID:"inst7",
 									InstructionString:"Instruction Pointing to Button 7 & Arrow pointing North",
 									InstructionDetailsString:"<br/> This Instruction block is explicitly positioned based on the Target element i.e Button 7 & the desired arrow direction i.e North <br/> Other all the confgurations are defaults & the X,Y position of the Block is auto calculated",
 									targetID:"input7",
 									arrowImagePosition:"N"});
-var inst8 = new OverlayInstructions({ID:"inst8",
+ChalkboardTour.addInstruction({ID:"inst8",
 									InstructionString:"Instruction Pointing to Button 8 & Arrow pointing South",
 									InstructionDetailsString:"<br/> This Instruction block is explicitly positioned based on the Target element i.e Button 8 & the desired arrow direction i.e South <br/> Other all the confgurations are defaults & the X,Y position of the Block is auto calculated",
 									targetID:"input8",
@@ -66,30 +65,33 @@ var inst8 = new OverlayInstructions({ID:"inst8",
 
 var centerScreenY = "0";//$(window).height()/4;
 var centerScreenX = "25%"; //$(window).width()/4;
-var inst9 = new OverlayInstructions({ID:"inst9",
+ChalkboardTour.addInstruction({ID:"inst9",
 									InstructionString:"You are about to start the Tour",
 									InstructionDetailsString:"<ul><li> This instruction Block has multiple Arrows & initial Arrow position is set to South</li><li> And is positioned explicitly on the center of screen, i.e X,Y position of the block is explicitly set </li><li> The onOKClick event is set to trigger the Start of the tour</li></ul>",									
 									arrowImagePosition:"S",
 									posX:centerScreenX,
 									posY:centerScreenY,
 									arrowImageRotationAngle:0,
-									expandDetails:true });
-inst9.showArrow("N",true);  // Add explicit arrows to Instruction Block
-inst9.showArrow("E",true);  // Add multiple
-inst9.showArrow("W",true);
-inst9.addEventListener("onOkClick",function() { ChalkboardTour.start();  });  // Add a onevent listener to start the tour
+									expandDetails:true,
+									targetID:"input9",
+									additionalArrows:["N", "E", "W"] });
+									
+//inst9.showArrow("N",true);  // Add explicit arrows to Instruction Block
+//inst9.showArrow("E",true);  // Add multiple
+//inst9.showArrow("W",true);
+//inst9.addEventListener("onOkClick",function() { ChalkboardTour.start();  });  // Add a onevent listener to start the tour
 
 
 // Create a Page Tour of all Instructions 
-ChalkboardTour.add(inst1);
-ChalkboardTour.add(inst2);
-ChalkboardTour.add(inst3);
-ChalkboardTour.add(inst4);
-ChalkboardTour.add(inst5);
-ChalkboardTour.add(inst6);
-ChalkboardTour.add(inst7);
-ChalkboardTour.add(inst8);
-ChalkboardTour.add(inst9);
+//ChalkboardTour.add(inst1);
+//ChalkboardTour.add(inst2);
+//ChalkboardTour.add(inst3);
+//ChalkboardTour.add(inst4);
+//ChalkboardTour.add(inst5);
+//ChalkboardTour.add(inst6);
+//ChalkboardTour.add(inst7);
+//ChalkboardTour.add(inst8);
+//ChalkboardTour.add(inst9);
 //ChalkboardTour.start();
 
 </script>

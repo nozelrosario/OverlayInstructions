@@ -206,12 +206,13 @@ TargetElement.prototype.getHeight = function () {
  *           InstructionString: Instruction Title Text to be rendered,
  *           InstructionDetailsString: Instruction Detail Text to be rendered,
  *           targetID: "ID" of the target HTML element for which the Instruction is displayed,
- *           arrowImagePosition: String indication the direction that the arrow should point. Possible values [E,W,S,N,NE,NW,SE,SW],
+ *           arrowImagePosition: [Primary position]String indication the direction that the arrow should point. Possible values [E,W,S,N,NE,NW,SE,SW],
  *           arrowImageURL: URL of a custom image that should be rendered instead of default arrow image,
  *           posX: default X-coordinate of the Instruction Block,
  *           posY: default Y-coordinate of the Instruction Block,
  *           arrowImageRotationAngle: Rotation angle for the arrow image,
- *           expandDetails: show details expanded by default }
+ *           expandDetails: show details expanded by default
+ *           additionalArrows: Array[] , show multiple arrows.  Possible values ["E","W","S","N","NE","NW","SE","SW"] }
  */
 
 function OverlayInstructions(params) {
@@ -230,7 +231,7 @@ OverlayInstructions.prototype.InstructionBlockElment = null;
 OverlayInstructions.prototype.InstructionOverlay = null;
 OverlayInstructions.prototype.arrowPositionFixed = false;
 OverlayInstructions.prototype.arrowPosition = "W";  // Primary arrow position{"E","W","S","N","NE","NW","SE","SW"}
-OverlayInstructions.prototype.arrowsActive = {		// Secondary arrows that are active via. showArrow#
+OverlayInstructions.prototype.arrowsActive = {		// Secondary arrows that are active via. showArrow# i.e "additionalArrows" config
 		"E" : false,
 		"W" : false,
 		"S" : false,
@@ -309,6 +310,14 @@ OverlayInstructions.prototype.constructor = function (params) {
 	
 	    if(params.expandDetails) {
 		   this.ToggleMoreDetail({data:eventData});
+	    }
+	    
+	    if(params.additionalArrows) {
+	    	for (var i=0 ; i < params.additionalArrows.length ; i++) {
+	    		if (this.isValidArrowPosition(params.additionalArrows[i])) {
+	    			this.showArrow(params.additionalArrows[i],true);
+	    		}
+	    	}
 	    }
 	    
 	    
@@ -400,8 +409,12 @@ OverlayInstructions.prototype.getOverlay = function () {
 
 OverlayInstructions.prototype.resizeOverlay = function () {
 	var overlay=this.getOverlay();
-	overlay.height($(document).height()-3);
-	overlay.width($(document).width()-3);
+	overlay.height($(document).height()-1);
+	overlay.width($(document).width()-1);
+};
+
+OverlayInstructions.prototype.__reducePageTourOverlayOpacity = function () {
+	
 };
 
 
@@ -757,16 +770,18 @@ OverlayInstructions.prototype.setPosition = function (positionX, positionY) {
 
 OverlayInstructions.prototype.show = function (_Is_Rendered_Within_Tour_) {
 	"use strict";
-	this.showOverlay();
-	this.setArrowImageRotationAngle();  //TODO : Re-Check the implementation, is this necessary ?? 
-	this.refreshInstructionBlockPosition();
-	$('#InstructionBlock_' + this.ControlID).show();
-	this.__Is_Active__ = true;
-	if(_Is_Rendered_Within_Tour_) {
-		this.__Is_Rendered_Within_Tour__ = (_Is_Rendered_Within_Tour_ === true) ? true : false;
+	if(!this.__Is_Active__) {
+		this.showOverlay();
+		this.setArrowImageRotationAngle();  //TODO : Re-Check the implementation, is this necessary ?? 
+		this.refreshInstructionBlockPosition();
+		$('#InstructionBlock_' + this.ControlID).show();
+		this.__Is_Active__ = true;
+		if(_Is_Rendered_Within_Tour_) {
+			this.__Is_Rendered_Within_Tour__ = (_Is_Rendered_Within_Tour_ === true) ? true : false;
+		}
+		this.resizeOverlay();
+		this.fireEvent("onShow");
 	}
-	this.resizeOverlay();
-	this.fireEvent("onShow");
 };
 
 OverlayInstructions.prototype.destroy = function () {
@@ -783,15 +798,17 @@ OverlayInstructions.prototype.destroy = function () {
 
 OverlayInstructions.prototype.hide = function () {
 	"use strict";
-	this.hideOverlay();
-	$('#InstructionBlock_' + this.ControlID).hide();
-	this.__Is_Active__ = false;
-	this.fireEvent("onHide");
-	// if rendered by TourManager, then trigger next instruction event
-	if(this.__Is_Rendered_Within_Tour__) {
-		this.fireEvent("__on_show_next_instruction__");	
+	if(this.__Is_Active__) {
+		this.hideOverlay();
+		$('#InstructionBlock_' + this.ControlID).hide();
+		this.__Is_Active__ = false;
+		this.fireEvent("onHide");
+		// if rendered by TourManager, then trigger next instruction event
+		if(this.__Is_Rendered_Within_Tour__) {
+			this.fireEvent("__on_show_next_instruction__");	
+		}
+		this.__Is_Rendered_Within_Tour__ = false;
 	}
-	this.__Is_Rendered_Within_Tour__ = false;
 };
 
 OverlayInstructions.prototype.setTheme = function (theme) {
