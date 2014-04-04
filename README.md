@@ -2,7 +2,7 @@ Overlay Instructions & Page Tour
 ==========================
 ##**PageTour**
 
-Page Tour is a JQuery based library for showing help/instructions on the page in a innovative and user friendly manner.OverlayInstruction is standalone feature which which can be used to show standalone instruction. Page Tour helps to combine several OverlayInstructions in a structured manner and provides the user a unique experience of reading help/instructions on the page. Can be used to provide a Tour of the page features. 
+Page Tour is a small (~200K) JQuery based library for showing help/instructions on the page in a innovative and user friendly manner. This library can be used with any HTML page for (mobile/Desktop) to show Help/Instructions for the Page. OverlayInstruction is standalone feature which which can be used to show standalone instruction. Page Tour helps to combine several OverlayInstructions in a structured manner and provides the user a unique experience of reading help/instructions on the page. Can be used to provide a Tour of the page features. 
 
 Demo:
 -------------------------
