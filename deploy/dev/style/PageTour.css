@@ -1,0 +1,26 @@
+/* Page Tour */
+
+div.PageTourOverlay
+{
+    position:absolute;
+    top:0px;
+    left:0px;
+    background: rgba(0, 0, 0, 0.5);
+	z-index:99999;
+}
+
+.PageTourNavigationButtons {
+	z-index:100000 !important;
+	height:50px;
+}
+
+.PageTourNavigationButtons .disabled{
+	 opacity:0.3;
+    -webkit-opacity:0.3;
+    -moz-opacity:0.3;
+    -ms-opacity:0.3;
+    -o-opacity:0.3;
+    -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=30)";
+    filter:alpha(opacity=30);
+    pointer-events:none;
+}
