@@ -1,4 +1,3 @@
-$( document ).ready(function() {
 var help_indicator = new OverlayInstructions({ID:"Help_Menu_link_help",
 	 InstructionString:"Dont know how to navigate ??",
 	 InstructionDetailsString:"<br/> Click the - Help - menu button ",
@@ -50,4 +49,3 @@ PageHelpTour.addInstruction({ID:"templatemo_content_panel_2_help",
 	 arrowImagePosition:"E",
 	 expandDetails:true});
 	 
-});
