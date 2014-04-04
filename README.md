@@ -54,8 +54,10 @@ You can create multiple page tours with Same set of OverlayInstruction Widgets.
 ```Javascript
     PageTourOnChalkboard.show();
 ```
-This will show the PageTour overlay on screen along with "Stop" - "Play" - "Next" - "Previous" navigation buttons at botton of page.
+This will show the PageTour overlay on screen along with "Stop" - "Play" - "Next" - "Previous" navigation buttons at bottom of page.
+
 <img src="https://github.com/nozelrosario/OverlayInstructions/blob/master/Demo/screenshot2.png?raw=true" />
+
 ###Methods provided by PageTour
 | Method_Name(Arguments)   | Return Type  | Description
 | :----------- |:-------------:| :-----:|
