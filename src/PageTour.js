@@ -1,6 +1,6 @@
 /**
  * PageTour
- * Page Tour consisting of instruction blocks along with sequential Navigation 
+ * Page Tour consisting of instruction blocks list along with sequential Navigation 
  */
 function PageTour(name) {
 	"use strict";
@@ -29,6 +29,12 @@ PageTour.prototype.pageInstructionsList = null;
 PageTour.prototype.currentActiveInstruction = null;
 PageTour.prototype.__blockNextInstruction = false;
 PageTour.prototype.__Is_Active__ = false;
+
+/**
+ * getPageInstructionsList
+ * @public
+ * @return {InstructionsList} associated with this PageTour
+ */
 PageTour.prototype.getPageInstructionsList = function () {
 	"use strict";
 	if (!this.pageInstructionsList) {
@@ -36,6 +42,12 @@ PageTour.prototype.getPageInstructionsList = function () {
 	}
 	return this.pageInstructionsList;
 };
+
+/**
+ * play
+ * @public
+ * Starts the Instruction Tour
+ */
 PageTour.prototype.play = function () {
 	"use strict";
 	if (this.currentActiveInstruction) {
@@ -51,18 +63,38 @@ PageTour.prototype.play = function () {
 	}
 };
 
+/**
+ * __blockNavigationToNextInstruction
+ * @private
+ * blocks the auto navigation to next instruction
+ */
 PageTour.prototype.__blockNavigationToNextInstruction = function () {
 	this.__blockNextInstruction = true;
 };
 
+/**
+ * __unBlockNavigationToNextInstruction
+ * @private
+ * un-blocks the auto navigation to next instruction
+ */
 PageTour.prototype.__unBlockNavigationToNextInstruction = function () {
 	this.__blockNextInstruction = false;
 };
 
+/**
+ * __isNavigationToNextInstructionAllowed
+ * @private
+ * @return bool indicating if the auto navigation to next instruction is blocked
+ */
 PageTour.prototype.__isNavigationToNextInstructionAllowed = function () {
 	return this.__blockNextInstruction;
 };
 
+/**
+ * pause
+ * @public
+ * pause the instruction Tour playback
+ */
 PageTour.prototype.pause = function () {
 	"use strict";
 	if (this.currentActiveInstruction) {
@@ -73,6 +105,11 @@ PageTour.prototype.pause = function () {
 	//this.hide();
 };
 
+/**
+ * stop
+ * @public
+ * stops the instruction Tour playback
+ */
 PageTour.prototype.stop = function () {
 	"use strict";
 	if (this.currentActiveInstruction) {
@@ -86,6 +123,12 @@ PageTour.prototype.stop = function () {
 	this.hide();
 };
 
+/**
+ * showInstruction
+ * @public
+ * @instructionID : ID of the Instruction to be shown
+ * Shows a particular instruction within the Page Tour
+ */
 PageTour.prototype.showInstruction = function (instructionID) {
 	"use strict";
 	var overlayInstructionObject = this.getPageInstructionsList().find(instructionID);
@@ -94,12 +137,24 @@ PageTour.prototype.showInstruction = function (instructionID) {
 	}
 };
 
+/**
+ * getInstruction
+ * @public
+ * @instructionID : ID of the Instruction to retrive
+ * Retrives a particular instruction within the Page Tour
+ * @return : {OverlayInstructions} object
+ */
 PageTour.prototype.getInstruction = function (instructionID) {
 	"use strict";
 	var overlayInstructionObject = this.getPageInstructionsList().find(instructionID);
 	return overlayInstructionObject;
 };
 
+/**
+ * showNextInstruction
+ * @private
+ * Navigates to next instruction within the Page Tour [internal use]
+ */
 PageTour.prototype.showNextInstruction = function () {
 	"use strict";
 	if (this.currentActiveInstruction && !this.__isNavigationToNextInstructionAllowed()) {
@@ -118,7 +173,12 @@ PageTour.prototype.showNextInstruction = function () {
 	}
 };
 
-PageTour.prototype.jumpToNextInstruction = function () {
+/**
+ * jumpToNextInstruction
+ * @public
+ * Navigates to next instruction within the Page Tour
+ */
+ PageTour.prototype.jumpToNextInstruction = function () {
 	"use strict";
 	if (this.currentActiveInstruction) {
 		this.__blockNavigationToNextInstruction();
@@ -138,6 +198,11 @@ PageTour.prototype.jumpToNextInstruction = function () {
 	}
 };
 
+/**
+ * jumpToPreviousInstruction
+ * @public
+ * Navigates to previous instruction within the Page Tour
+ */
 PageTour.prototype.jumpToPreviousInstruction = function () {
 	"use strict";
 	if (this.currentActiveInstruction) {
@@ -157,6 +222,12 @@ PageTour.prototype.jumpToPreviousInstruction = function () {
 	}
 };
 
+/**
+ * __add
+ * @private
+ * @overlayInstructionObject : {OverlayInstructions} object
+ * Adds a instruction to the instruction list associated with Page Tour
+ */
 PageTour.prototype.__add = function (overlayInstructionObject) {
 	"use strict";
 	var me = this;
@@ -164,6 +235,12 @@ PageTour.prototype.__add = function (overlayInstructionObject) {
 	this.getPageInstructionsList().add(overlayInstructionObject);
 };
 
+/**
+ * removeInstruction
+ * @public
+ * @instructionID : ID id instruction to be removed
+ * Removes a instruction from the instruction list associated with Page Tour
+ */
 PageTour.prototype.removeInstruction = function (instructionID) {
 	"use strict";
 	var overlayInstructionObject = this.getPageInstructionsList().find(instructionID);
@@ -173,6 +250,22 @@ PageTour.prototype.removeInstruction = function (instructionID) {
 	}
 };
 
+/**
+ * addInstruction
+ * @public
+ * * @params: {ID: desired ID of the OverlayInstruction Block,
+ *           InstructionString: Instruction Title Text to be rendered,
+ *           InstructionDetailsString: Instruction Detail Text to be rendered,
+ *           targetID: "ID" of the target HTML element for which the Instruction is displayed,
+ *           arrowImagePosition: [Primary position]String indication the direction that the arrow should point. Possible values [E,W,S,N,NE,NW,SE,SW],
+ *           arrowImageURL: URL of a custom image that should be rendered instead of default arrow image,
+ *           posX: default X-coordinate of the Instruction Block,
+ *           posY: default Y-coordinate of the Instruction Block,
+ *           arrowImageRotationAngle: Rotation angle for the arrow image,
+ *           expandDetails: show details expanded by default
+ *           additionalArrows: Array[] , show multiple arrows.  Possible values ["E","W","S","N","NE","NW","SE","SW"] }
+ * Adds a new instruction to the instruction list associated with Page Tour
+ */
 PageTour.prototype.addInstruction = function(params) {
 	var overlayInstruction = new OverlayInstructions(params);
 	this.__add(overlayInstruction);
@@ -181,6 +274,13 @@ PageTour.prototype.addInstruction = function(params) {
 	}
 };
 
+/**
+ * addTarget
+ * @private
+ * @targetElementID : ID of Target element of the instruction
+ * @overlayInstruction : {OverlayInstructions} object
+ * Removes a instruction from the instruction list associated with Page Tour
+ */
 PageTour.prototype.addTarget = function (targetElementID,overlayInstruction) {
 	//check if widget exists
 	var targetElemet = $('#' + targetElementID), overlay, InstructionHelpButton;
@@ -199,6 +299,12 @@ PageTour.prototype.addTarget = function (targetElementID,overlayInstruction) {
 	}	
 };
 
+/**
+ * OnInstructionTriggerButtonClick
+ * @private
+ * @eventData : {Object} Event data
+ * OnClick handler for the trigger button
+ */
 PageTour.prototype.OnInstructionTriggerButtonClick = function (eventData) {
 	"use strict";
 	var OverlayInstructionObj = eventData.data.OverlayInstructionObj;
@@ -209,6 +315,12 @@ PageTour.prototype.OnInstructionTriggerButtonClick = function (eventData) {
 	PageTourObj.showPauseButton();
 };
 
+/**
+ * rePositionInstructionTarget
+ * @private
+ * @targetElementID : Id Of the Target Element
+ * Refreshes the Trigger button position for Target Element
+ */
 PageTour.prototype.rePositionInstructionTarget = function (targetElementID) {
 
 		var targetWidgetInstructionTrigger = this.instructionTargets[targetElementID];  //$('#' + targetElementID);
@@ -219,6 +331,11 @@ PageTour.prototype.rePositionInstructionTarget = function (targetElementID) {
 		targetWidgetInstructionTrigger.css("top", targetWidgetY1);
 };
 
+/**
+ * rePositionAllInstructionTargets
+ * @private
+ * Refreshes the Trigger button position for all Target elements
+ */
 PageTour.prototype.rePositionAllInstructionTargets = function () {
 	// loop through all targets and update each positions
 	var instructionTarget;
@@ -229,12 +346,23 @@ PageTour.prototype.rePositionAllInstructionTargets = function () {
 	}
 };
 
+/**
+ * refreshPageTourLayout
+ * @private
+ * Refreshes & repositions the entire layout of the pagetour
+ */
 PageTour.prototype.refreshPageTourLayout = function () {
 	this.resizeOverlay();
 	this.rePositionAllInstructionTargets();
 	
 };
 
+/**
+ * getOverlay
+ * @private
+ * gets the Overlay of the pagetour
+ * @return : ${Object} of the Overlay
+ */
 PageTour.prototype.getOverlay = function () {
 	"use strict";
 	var overlay;
@@ -246,12 +374,23 @@ PageTour.prototype.getOverlay = function () {
 	return overlay;
 };
 
+/**
+ * resizeOverlay
+ * @private
+ * Resize the Overlay dimensions as per Document dimensions
+ */
 PageTour.prototype.resizeOverlay = function () {
 	var overlay=this.getOverlay();
 	overlay.height($(document).height()-1);
 	overlay.width($(document).width()-1);
 };
 
+/**
+ * createOverlay
+ * @private
+ * Create the Overlay element
+ * @return : ${Object} of the Overlay
+ */
 PageTour.prototype.createOverlay = function () {
 	"use strict";
 	var overlay = $('#PageTour_' + this.name + '_Overlay');
@@ -263,6 +402,12 @@ PageTour.prototype.createOverlay = function () {
 	return overlay;
 };
 
+/**
+ * getNavigationButtons
+ * @private
+ * gets the Navigation Buttons
+ * @return : ${Object} of the Navigation Buttons
+ */
 PageTour.prototype.getNavigationButtons = function () {
 	"use strict";
 	var tourNavigationButtons;
@@ -274,6 +419,12 @@ PageTour.prototype.getNavigationButtons = function () {
 	return tourNavigationButtons;
 };
 
+/**
+ * createNavigationButtons
+ * @private
+ * creates the Navigation Buttons
+ * @return : ${Object} of the Navigation Buttons
+ */
 PageTour.prototype.createNavigationButtons = function () {
 	var PageTourPlayButton = $('<a class="PageTourNavigationButton PageTourPlayButton" style="display:block;float:left;" id="PageTour_' + this.name + '_PlayButton"></a>');
 	var PageTourPauseButton = $('<a class="PageTourNavigationButton PageTourPauseButton" style="display:none;float:left;" id="PageTour_' + this.name + '_PauseButton"></a>');
@@ -299,6 +450,12 @@ PageTour.prototype.createNavigationButtons = function () {
 	
 };
 
+/**
+ * onPlayButtonClick
+ * @private
+ * @eventData : {Object} event data
+ * Play button click handler
+ */
 PageTour.prototype.onPlayButtonClick = function (eventData) {
 	var PageTourObj = eventData.data.PageTourObj;
 	PageTourObj.showPauseButton();
@@ -306,12 +463,24 @@ PageTour.prototype.onPlayButtonClick = function (eventData) {
 	PageTourObj.play();
 };
 
+/**
+ * onPauseButtonClick
+ * @private
+ * @eventData : {Object} event data
+ * Pause button click handler
+ */
 PageTour.prototype.onPauseButtonClick = function (eventData) {
 	var PageTourObj = eventData.data.PageTourObj;
 	PageTourObj.showPlayButton();
 	PageTourObj.pause();
 };
 
+/**
+ * onStopButtonClick
+ * @private
+ * @eventData : {Object} event data
+ * Stop button click handler
+ */
 PageTour.prototype.onStopButtonClick = function (eventData) {
 	var PageTourObj = eventData.data.PageTourObj;
 	PageTourObj.stop();
@@ -319,56 +488,115 @@ PageTour.prototype.onStopButtonClick = function (eventData) {
 	PageTourObj.hideNextPreviousButtons();
 };
 
+/**
+ * onNextButtonClick
+ * @private
+ * @eventData : {Object} event data
+ * Next button click handler
+ */
 PageTour.prototype.onNextButtonClick = function (eventData) {
 	var PageTourObj = eventData.data.PageTourObj;
 	PageTourObj.showPauseButton();
 	PageTourObj.jumpToNextInstruction();
 };
 
+/**
+ * onPreviousButtonClick
+ * @private
+ * @eventData : {Object} event data
+ * Previous button click handler
+ */
 PageTour.prototype.onPreviousButtonClick = function (eventData) {
 	var PageTourObj = eventData.data.PageTourObj;
 	PageTourObj.showPauseButton();
 	PageTourObj.jumpToPreviousInstruction();
 };
 
+/**
+ * showPlayButton
+ * @private
+ * Shows the Play button
+ */
 PageTour.prototype.showPlayButton = function () {
 	$('#PageTour_' + this.name + '_PlayButton').css("display","block");
 	$('#PageTour_' + this.name + '_PauseButton').css("display","none");
 };
 
+/**
+ * showPauseButton
+ * @private
+ * Shows the Pause button
+ */
 PageTour.prototype.showPauseButton = function () {
 	$('#PageTour_' + this.name + '_PlayButton').css("display","none");
 	$('#PageTour_' + this.name + '_PauseButton').css("display","block");
 };
 
+/**
+ * showNextPreviousButtons
+ * @private
+ * Shows the Next Previous Buttons
+ */
 PageTour.prototype.showNextPreviousButtons = function () {
 	$('#PageTour_' + this.name + '_NextButton').css("display","block");
 	$('#PageTour_' + this.name + '_PreviousButton').css("display","block");
 };
 
+/**
+ * hideNextPreviousButtons
+ * @private
+ * Hides the Next Previous Buttons
+ */
 PageTour.prototype.hideNextPreviousButtons = function () {
 	$('#PageTour_' + this.name + '_NextButton').css("display","none");
 	$('#PageTour_' + this.name + '_PreviousButton').css("display","none");
 };
 
+/**
+ * disableNextPreviousButtons
+ * @private
+ * Disables the Next Previous Buttons
+ */
 PageTour.prototype.disableNextPreviousButtons = function () {
 	this.disableButton("NextButton");
 	this.disableButton("PreviousButton");
 };
 
+/**
+ * enableNextPreviousButtons
+ * @private
+ * Enables the Next Previous Buttons
+ */
 PageTour.prototype.enableNextPreviousButtons = function () {
 	this.enableButton("NextButton");
 	this.enableButton("PreviousButton");
 };
 
+/**
+ * disableButton
+ * @private
+ * @button : button to disable
+ * Disables a Button
+ */
 PageTour.prototype.disableButton = function (button) {
 	$('#PageTour_' + this.name + '_'+ button).addClass('disabled');
 };
 
+/**
+ * enableButton
+ * @private
+ * @button : button to disable
+ * Enable a Button
+ */
 PageTour.prototype.enableButton = function(button) {
 	$('#PageTour_' + this.name + '_'+ button).removeClass('disabled');
 };
 
+/**
+ * show
+ * @public
+ * Show the Pahe Tour on screen
+ */
 PageTour.prototype.show = function () {
 	this.refreshPageTourLayout();
 	var overlay=this.getOverlay();
@@ -378,6 +606,11 @@ PageTour.prototype.show = function () {
 	this.__Is_Active__ = true;
 };
 
+/**
+ * hide
+ * @public
+ * Hide the Pahe Tour 
+ */
 PageTour.prototype.hide = function () {
 	var overlay=this.getOverlay();
 	var navigationButtons = this.getNavigationButtons();
