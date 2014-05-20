@@ -1,6 +1,7 @@
 {
   "name": "PageTour",
   "version": "0.0.1",
+  "copyright": "* https://github.com/nozelrosario/OverlayInstructions \n *\n * Copyright 2014 @ Nozel Rosario\n * Released under Apache License\n * http://www.apache.org/licenses/\n *\n",
   "devDependencies": {
     "grunt": "~0.4.1",
     "grunt-contrib-uglify": "~0.2.0",

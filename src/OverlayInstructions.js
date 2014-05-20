@@ -146,7 +146,6 @@ OverlayInstructions.prototype.ToggleMoreDetail = function (eventData) {
 		$("#MoreInstructionDetail_" + OverlayInstructionObj.ControlID).css("display","block");
 	}
 	OverlayInstructionObj.refreshInstructionBlockPosition();
-
 };
 
 OverlayInstructions.prototype.OnInstructionOKButtonClick = function (eventData) {
@@ -458,6 +457,7 @@ OverlayInstructions.prototype.refreshInstructionBlockPosition = function () {
 	}
 	this.setPosition(this.InstructionPositionX, this.InstructionPositionY);
 	this.resizeOverlay();
+	this.scrollToInstruction();
 };
 
 
@@ -571,15 +571,14 @@ OverlayInstructions.prototype.show = function (_Is_Rendered_Within_Tour_) {
 	"use strict";
 	if(!this.__Is_Active__) {
 		this.showOverlay();
-		this.setArrowImageRotationAngle();  //TODO : Re-Check the implementation, is this necessary ?? 
-		this.refreshInstructionBlockPosition();
+		this.setArrowImageRotationAngle();  //TODO : Re-Check the implementation, is this necessary ?? 	
 		$('#InstructionBlock_' + this.ControlID).show();
 		this.__Is_Active__ = true;
 		if(_Is_Rendered_Within_Tour_) {
 			this.__Is_Rendered_Within_Tour__ = (_Is_Rendered_Within_Tour_ === true) ? true : false;
 		}
-		this.resizeOverlay();
-		this.scrollToInstruction();
+		//this.resizeOverlay();
+		this.refreshInstructionBlockPosition();
 		this.fireEvent("onShow");
 	}
 };
@@ -587,10 +586,14 @@ OverlayInstructions.prototype.show = function (_Is_Rendered_Within_Tour_) {
 OverlayInstructions.prototype.scrollToInstruction = function() {
 	var instructionBlockID = this.getID();
     topPadding = 100;
+	var currentScrollPosition = $(document).scrollTop();
     var moveTo = $("#InstructionBlock_" + instructionBlockID).offset().top - topPadding;
-	$('html, body').stop().animate({
-		scrollTop: moveTo
-		 }, 1000);
+	//alert("currentScrollPosition=" + currentScrollPosition + "  moveTo=" + moveTo + "   (currentScrollPosition + topPadding) = " + (currentScrollPosition + topPadding));
+	//if(moveTo > (currentScrollPosition + topPadding)) {
+		$('html, body').stop().animate({
+		    scrollTop: moveTo
+		    },1000);
+   // }
 };
 
 OverlayInstructions.prototype.destroy = function () {

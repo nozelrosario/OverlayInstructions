@@ -55,6 +55,6 @@ vertical-align:middle;
 
 .InstructionBlock .InstructionOKButtonHolder {
 width:100%;
-display:table;
+display:block;
 
 }

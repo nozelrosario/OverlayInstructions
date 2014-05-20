@@ -22,7 +22,7 @@ module.exports = function(grunt) {
         uglify: {
             options: {
                 banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - ' +
-                    '<%= grunt.template.today("yyyy-mm-dd") %> */'
+                    '<%= grunt.template.today("yyyy-mm-dd") %> \n\n <%= pkg.copyright %> */ \n'
             },
             js: {
                 files: {
@@ -36,7 +36,9 @@ module.exports = function(grunt) {
 			    { src: 'style/**', 
 			      dest: 'deploy/dev/'},
 				{ src: 'style/Themes/Chalkboard/images/**', 
-			      dest: 'deploy/release/'}]
+			      dest: 'deploy/release/'},
+				{ src: 'Demo/**', 
+			      dest: 'deploy/'}]
           }
         },
 		replace: {
@@ -49,10 +51,21 @@ module.exports = function(grunt) {
 									{
 									from: 'url("',
 									to: 'url("style/'}]
+			},
+			demo: {
+					src: ['Demo/index.html'],
+					dest: 'deploy/Demo/index.html',
+					replacements: [ { 
+									from: '../',
+									to: '../../'}]
 			}
 		},
         cssmin: {
           dist: {
+		    options: {
+                banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - ' +
+                    '<%= grunt.template.today("yyyy-mm-dd") %> \n\n <%= pkg.copyright %> */ \n'
+            },
             files: {
               'deploy/release/style/PageTour.min.css' : ['deploy/dev/style/PageTour.css'],
 			  'deploy/release/style/OverlayInstructions.min.css' : ['deploy/dev/style/OverlayInstructions.css'],

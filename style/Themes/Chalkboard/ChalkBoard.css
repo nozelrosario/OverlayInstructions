@@ -46,7 +46,8 @@ float:left;
 margin-left:10px;
 color:white; 
 font-family:cursive;
-font-size: 1.5em;
+font-size: 23px;
+line-height: 23px;
 }
 
 .InstructionBlock.ChalkBoard .InstructionOKButton {
@@ -75,7 +76,8 @@ float:left;
 margin-left:10px;
 color:white; 
 font-family:cursive;
-font-size: 1em;
+font-size: 17px;
+line-height: 17px;
 }
 
 .InstructionBlock.ChalkBoard .MoreDetailButton, .InstructionBlock.ChalkBoard .MoreDetailButton:visited {

@@ -1,1 +1,11 @@
-.InstructionsOverlay{position:absolute;top:0;left:0;background-color:#000;opacity:.5;-webkit-opacity:.5;-moz-opacity:.5;-ms-opacity:.5;-o-opacity:.5;-ms-filter:"alpha(Opacity=50)";filter:alpha(opacity=50);z-index:99999}.InstructionBlock{position:absolute;z-index:100010}.InstructionBlock .InstructionOKButton{z-index:100012}.InstructionBlock .InstructionContent{width:280px}.InstructionBlock .MoreDetailButton{float:right}.InstructionBlock .ArrowImageCell{vertical-align:top}.InstructionBlock .ArrowImageCell_S,.InstructionBlock .ArrowImageCell_SW,.InstructionBlock .ArrowImageCell_SE{vertical-align:bottom}.InstructionBlock .ArrowImageCell_E,.InstructionBlock .ArrowImageCell_W{vertical-align:middle}.InstructionBlock .ArrowImage_S,.InstructionBlock .ArrowImage_N{margin-left:30%}.InstructionBlock .InstructionOKButtonHolder{width:100%;display:table}
+/*! PageTour - v0.0.1 - 2014-05-20 
+
+ * https://github.com/nozelrosario/OverlayInstructions 
+ *
+ * Copyright 2014 @ Nozel Rosario
+ * Released under Apache License
+ * http://www.apache.org/licenses/
+ *
+ */ 
+
+.InstructionsOverlay{position:absolute;top:0;left:0;background-color:#000;opacity:.5;-webkit-opacity:.5;-moz-opacity:.5;-ms-opacity:.5;-o-opacity:.5;-ms-filter:"alpha(Opacity=50)";filter:alpha(opacity=50);z-index:99999}.InstructionBlock{position:absolute;z-index:100010}.InstructionBlock .InstructionOKButton{z-index:100012}.InstructionBlock .InstructionContent{width:280px}.InstructionBlock .MoreDetailButton{float:right}.InstructionBlock .ArrowImageCell{vertical-align:top}.InstructionBlock .ArrowImageCell_S,.InstructionBlock .ArrowImageCell_SW,.InstructionBlock .ArrowImageCell_SE{vertical-align:bottom}.InstructionBlock .ArrowImageCell_E,.InstructionBlock .ArrowImageCell_W{vertical-align:middle}.InstructionBlock .ArrowImage_S,.InstructionBlock .ArrowImage_N{margin-left:30%}.InstructionBlock .InstructionOKButtonHolder{width:100%;display:block}
