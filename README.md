@@ -32,6 +32,14 @@ Along with the OverlayInstructilons script you will have to add refrence to Page
 The pageTour constructor take the ID as argument. "ID" will the unique identifier for your PageTour.
 You can create multiple page tours with Same set of OverlayInstruction Widgets. 
 
+Say, you have following HTML elements on your page :
+```HTML
+<input type="text" id="input1" value="some value" > </input>
+<input type="text" id="input2" value="some value" > </input>
+<input type="text" id="input3" value="some value" > </input>
+```
+Then to apply Overlay Instructions to these elements you have to do following :
+
  2. Create OverlayInstructions widgets and add to the PageTour
 ```Javascript
     PageTourOnChalkboard.addInstruction({ID:"inst1",
