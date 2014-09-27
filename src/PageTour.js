@@ -267,10 +267,18 @@ PageTour.prototype.removeInstruction = function (instructionID) {
  * Adds a new instruction to the instruction list associated with Page Tour
  */
 PageTour.prototype.addInstruction = function(params) {
-	var overlayInstruction = new OverlayInstructions(params);
+	var overlayInstruction,targetID;
+	if(params instanceof OverlayInstructions) {
+		overlayInstruction = params;
+		targetID = (overlayInstruction.targetElement)?overlayInstruction.targetElement.ID:"";
+	} else {
+		overlayInstruction = new OverlayInstructions(params);
+		targetID = params.targetID;
+	}
+	
 	this.__add(overlayInstruction);
-	if(params.targetID) {
-		this.addTarget(params.targetID,overlayInstruction);
+	if(targetID) {
+		this.addTarget(targetID,overlayInstruction);
 	}
 };
 

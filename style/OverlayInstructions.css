@@ -16,13 +16,32 @@
 	z-index:99999;
 }
 
-.InstructionBlock
-{
+.InstructionBlock {
 	position:absolute;
-	z-index:100010; 
-	/*top: 7px;
-	left: 237px;*/
+	z-index:100010;
+    height:80%;
+	font-size:90%;
 }
+
+/*@media (max-width: 900px) {
+  .InstructionBlock { 
+        font-size: 1em; 
+	}
+}
+@media (max-width: 400px) {
+  .InstructionBlock { 
+        font-size: 1em;
+	}
+}*/
+
+.InstructionBlock .InstructionText  {
+    font-size: 1.2em;
+}
+
+.InstructionBlock .InstructionDetailText {
+    font-size: 1em;
+}
+
 .InstructionBlock .InstructionOKButton {
 	z-index:100012;
 }
@@ -32,29 +51,41 @@
 }
 
 .InstructionBlock .MoreDetailButton {
-float:right;
+    float:right;
 }
 
-
 .InstructionBlock .ArrowImageCell {
-vertical-align:top;
+    vertical-align:top;
+
+}
+.InstructionBlock .ArrowImageCell_NE,.InstructionBlock .ArrowImageCell_NW,.InstructionBlock .ArrowImageCell_SW,.InstructionBlock .ArrowImageCell_SE {
+	/*width:30%;*/
 }
 
 .InstructionBlock .ArrowImageCell_S,.InstructionBlock .ArrowImageCell_SW,.InstructionBlock .ArrowImageCell_SE {
-vertical-align:bottom;
+    vertical-align:bottom;
 }
 
 .InstructionBlock .ArrowImageCell_E, .InstructionBlock .ArrowImageCell_W {
-vertical-align:middle;
+    vertical-align:middle;
+	width:30%;
+	min-width:50px;
 }
 
 .InstructionBlock .ArrowImage_S, .InstructionBlock .ArrowImage_N {
 	margin-left:30%;
+	min-height:50px;
 }
+
+.InstructionBlock .ArrowImage_SW, .InstructionBlock .ArrowImage_NW {
 
 
 .InstructionBlock .InstructionOKButtonHolder {
-width:100%;
-display:block;
+    width:100%;
+    display:block;
 
+}
+
+.InstructionBlock tr.TopRow , .InstructionBlock tr.MiddleRow , .InstructionBlock tr.BottomRow {
+    height:1%;
 }

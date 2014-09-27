@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta name="viewport" content="width=device-width, user-scalable=no">
 <link rel="stylesheet" href="../style/style.css">
 <script type="text/javascript" src="../lib/jquery-2.0.3.js"></script>
 <script type="text/javascript" src="../src/Helpers.js"></script>
@@ -13,23 +14,42 @@
 <body>
 <form id="form1" class="" >
 
-	  <button id="input1" type="button" style="position:absolute;left:0px;top:0px;" >Button 1 (0,0)=>NW</button><br>
-	  <button id="input2" type="button" style="position:absolute;left:80%;top:0px;" >Button 2 (80%,0)=>NE</button>
-	  <button id="input3" type="button" style="position:absolute;left:0px;top:80%;" >Button 3 (0,80%)=>SW</button>
-	  <button id="input4" type="button" style="position:absolute;left:80%;top:80%;" >Button 4 (80%,80%)=>SE</button>
-	  <button id="input5" type="button" style="position:absolute;left:0px;top:40%;" >Button 5 (0,40%)=>W</button>
-	  <button id="input6" type="button" style="position:absolute;left:80%;top:40%;" >Button 6 (80%,40%)=>E</button>
-	  <button id="input7" type="button" style="position:absolute;left:40%;top:0px;" >Button 7 (40%,0)=>N</button>
-	  <button id="input8" type="button" style="position:absolute;left:40%;top:80%;" >Button 8 (40%,80%)=>S</button>
-	  <button id="input9" type="button" style="position:absolute;left:40%;top:40%;" onclick="ChalkboardTour.show();" >Button 8 (50%,50%)=>ALL</button>
+	  <button id="input1" type="button" style="position:absolute;left:0px;top:0px;" >Button 1<br>(0,0)=>NW</button><br>
+	  <button id="input2" type="button" style="position:absolute;left:80%;top:0px;" >Button 2<br>(80%,0)=>NE</button>
+	  <button id="input3" type="button" style="position:absolute;left:0px;top:80%;" >Button 3<br>(0,80%)=>SW</button>
+	  <button id="input4" type="button" style="position:absolute;left:80%;top:80%;" >Button 4<br>(80%,80%)=>SE</button>
+	  <button id="input5" type="button" style="position:absolute;left:0px;top:40%;" >Button 5<br>(0,40%)=>W</button>
+	  <button id="input6" type="button" style="position:absolute;left:80%;top:40%;" >Button 6<br>(80%,40%)=>E</button>
+	  <button id="input7" type="button" style="position:absolute;left:40%;top:0px;" >Button 7<br>(40%,0)=>N</button>
+	  <button id="input8" type="button" style="position:absolute;left:40%;top:80%;" >Button 8<br>(40%,80%)=>S</button>
+	  <button id="input9" type="button" style="position:absolute;left:40%;top:40%;" onclick="startTest();" >Button 8<br>(50%,50%)=>ALL</button>
 
 </form>
 
 <script type="text/javascript">
 
+function startTest() {
+	First_Instruction.show();
+	ChalkboardTour.show();
+}
+
+
 var ChalkboardTour= new PageTour("ChalkBoard");
 
 //(ID,InstructionString,InstructionDetailsString,targetID,arrowImagePosition,arrowImageURL,posX,posY,arrowImageRotationAngle)
+
+var First_Instruction = new OverlayInstructions({ID:"inst0",
+									InstructionString:"You are about to start the Tour",
+									InstructionDetailsString:"<ul><li> This instruction Block has multiple Arrows & initial Arrow position is set to South</li><li> And is positioned explicitly on the center of screen, i.e X,Y position of the block is explicitly set </li><li> The onOKClick event is set to trigger the Start of the tour</li></ul>",									
+									arrowImagePosition:"S",
+									//posX:centerScreenX,
+									//posY:centerScreenY,
+									arrowImageRotationAngle:0,
+									expandDetails:true,
+									//targetID:"input9",
+									additionalArrows:["N", "E", "W"] });
+
+
 ChalkboardTour.addInstruction({ID:"inst1",
 									 InstructionString:"Instruction Pointing to Button 1",
 									 InstructionDetailsString:"<br/> This Instruction block is automatically positioned based on the Target element i.e Button 1<br/> Other all the confgurations are defaults",
@@ -67,18 +87,11 @@ ChalkboardTour.addInstruction({ID:"inst8",
 									targetID:"input8",
 									arrowImagePosition:"S"});
 
-var centerScreenY = "0";//$(window).height()/4;
-var centerScreenX = "25%"; //$(window).width()/4;
-ChalkboardTour.addInstruction({ID:"inst9",
-									InstructionString:"You are about to start the Tour",
-									InstructionDetailsString:"<ul><li> This instruction Block has multiple Arrows & initial Arrow position is set to South</li><li> And is positioned explicitly on the center of screen, i.e X,Y position of the block is explicitly set </li><li> The onOKClick event is set to trigger the Start of the tour</li></ul>",									
-									arrowImagePosition:"S",
-									posX:centerScreenX,
-									posY:centerScreenY,
-									arrowImageRotationAngle:0,
-									expandDetails:true,
-									targetID:"input9",
-									additionalArrows:["N", "E", "W"] });
+ChalkboardTour.addInstruction(First_Instruction);
+
+//var centerScreenY = "0";//$(window).height()/4;
+//var centerScreenX = "25%"; //$(window).width()/4;
+
 									
 //inst9.showArrow("N",true);  // Add explicit arrows to Instruction Block
 //inst9.showArrow("E",true);  // Add multiple
