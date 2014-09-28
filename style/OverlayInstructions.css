@@ -21,6 +21,7 @@
 	z-index:100010;
     height:80%;
 	font-size:90%;
+	-webkit-transition: display .5s;
 }
 
 /*@media (max-width: 900px) {
@@ -44,6 +45,10 @@
 
 .InstructionBlock .InstructionOKButton {
 	z-index:100012;
+}
+
+.InstructionBlock .MiddleRow {
+	height: 200px;
 }
 
 .InstructionBlock .InstructionContent {
@@ -89,3 +94,4 @@
 .InstructionBlock tr.TopRow , .InstructionBlock tr.MiddleRow , .InstructionBlock tr.BottomRow {
     height:1%;
 }
+

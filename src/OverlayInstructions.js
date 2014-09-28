@@ -51,6 +51,7 @@ OverlayInstructions.prototype.arrowImageRotationFixed = false; // if the rotatio
 OverlayInstructions.prototype.instructionBlockTheme = "ChalkBoard";
 OverlayInstructions.prototype.__Is_Rendered_Within_Tour__ = false;
 OverlayInstructions.prototype.__Is_Active__ = false;
+// arrowStyles keeps track of custom arrow image urls. Default is Current theme Css -> background-image property.
 OverlayInstructions.prototype.arrowStyles = {
 	"E" : "arrowImages/arrow-E.png",
 	"W" : "arrowImages/arrow-W.png",
@@ -141,12 +142,36 @@ OverlayInstructions.prototype.ToggleMoreDetail = function (eventData) {
 
 	if (($("#MoreInstructionDetail_" + OverlayInstructionObj.ControlID).is(':visible'))) {
 		$("#MoreDetailButton_" + OverlayInstructionObj.ControlID).text("more...");
-		$("#MoreInstructionDetail_" + OverlayInstructionObj.ControlID).css("display","none");
+		//$("#MoreInstructionDetail_" + OverlayInstructionObj.ControlID).css("display","block");
+		//$("#MoreInstructionDetail_" + OverlayInstructionObj.ControlID).hide({duration:"fast",easing:"swing",done:function() { OverlayInstructionObj.refreshInstructionBlockPosition(); }});
+		$("#MoreInstructionDetail_" + OverlayInstructionObj.ControlID).animate({    
+            height: "toggle",
+            opacity: 0
+        },
+        {
+             duration: 500,
+             easing: "swing",
+             done: function() { 
+             	          OverlayInstructionObj.refreshInstructionBlockPosition(); 
+             	      }
+         });
 	} else {
 		$("#MoreDetailButton_" + OverlayInstructionObj.ControlID).text("less...");
-		$("#MoreInstructionDetail_" + OverlayInstructionObj.ControlID).css("display","block");
+		//$("#MoreInstructionDetail_" + OverlayInstructionObj.ControlID).css("display","block");
+		//$("#MoreInstructionDetail_" + OverlayInstructionObj.ControlID).show({duration:"fast",easing:"swing",done:function() { OverlayInstructionObj.refreshInstructionBlockPosition(); }});
+		$("#MoreInstructionDetail_" + OverlayInstructionObj.ControlID).animate({    
+            height: "toggle",
+            opacity: 1
+        },
+        {
+             duration: 500,
+             easing: "swing",
+             done: function() { 
+             	          OverlayInstructionObj.refreshInstructionBlockPosition(); 
+             	      }
+         });
 	}
-	OverlayInstructionObj.refreshInstructionBlockPosition();
+	//OverlayInstructionObj.refreshInstructionBlockPosition();
 };
 
 OverlayInstructions.prototype.OnInstructionOKButtonClick = function (eventData) {
@@ -614,13 +639,14 @@ OverlayInstructions.prototype.show = function (_Is_Rendered_Within_Tour_) {
 	if(!this.__Is_Active__) {
 		this.showOverlay();
 		this.setArrowImageRotationAngle();  //TODO : Re-Check the implementation, is this necessary ?? 	
-		$('#InstructionBlock_' + this.ControlID).show();
+		var me = this;
+		$('#InstructionBlock_' + this.ControlID).show({duration:"fast",easing:"swing",start:function() { me.refreshInstructionBlockPosition(); }});
 		this.__Is_Active__ = true;
 		if(_Is_Rendered_Within_Tour_) {
 			this.__Is_Rendered_Within_Tour__ = (_Is_Rendered_Within_Tour_ === true) ? true : false;
 		}
 		//this.resizeOverlay();
-		this.refreshInstructionBlockPosition();
+		//this.refreshInstructionBlockPosition();
 		this.fireEvent("onShow");
 	}
 };

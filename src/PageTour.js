@@ -439,7 +439,7 @@ PageTour.prototype.createNavigationButtons = function () {
 	var PageTourStopButton = $('<a class="PageTourNavigationButton PageTourStopButton" style="display:block;float:left;" id="PageTour_' + this.name + '_StopButton"></a>');
 	var PageTourNextButton = $('<a class="PageTourNavigationButton PageTourNextButton" style="display:none;float:left;" id="PageTour_' + this.name + '_NextButton"></a>');
 	var PageTourPreviousButton = $('<a class="PageTourNavigationButton PageTourPreviousButton" style="display:none;float:left;" id="PageTour_' + this.name + '_PreviousButton"></a>');
-	var PageNavigationButtonsHolder = $('<div class="PageTourNavigationButtons ' + this.instructionBlockTheme + '" style="display:none; position:fixed; bottom: 0; width: 100%;" id="PageTour_' + this.name + '_NavigationButtons"></div>');
+	var PageNavigationButtonsHolder = $('<div class="PageTourNavigationButtons ' + this.instructionBlockTheme + '" style="display:none; position:fixed; bottom: 0; width: 280px;" id="PageTour_' + this.name + '_NavigationButtons"></div>');
 	PageNavigationButtonsHolder.append(PageTourStopButton);
 	PageNavigationButtonsHolder.append(PageTourPlayButton);
 	PageNavigationButtonsHolder.append(PageTourPauseButton);
@@ -603,7 +603,7 @@ PageTour.prototype.enableButton = function(button) {
 /**
  * show
  * @public
- * Show the Pahe Tour on screen
+ * Show the Page Tour on screen
  */
 PageTour.prototype.show = function () {
 	this.refreshPageTourLayout();
