@@ -64,6 +64,12 @@ font-size: 23px;*/
 line-height: 23px;
 }
 
+.InstructionBlock.ChalkBoard .InstructionOKButton:active  {
+  -webkit-animation: buttonBlast .5s;
+  animation: buttonBlast .5s;
+}
+
+
 .InstructionBlock.ChalkBoard .InstructionOKButton {
 margin:15px 0px 15px 15px;
 display: inline-block;

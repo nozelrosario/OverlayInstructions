@@ -134,6 +134,7 @@ OverlayInstructions.prototype.constructor = function (params) {
 	this.__Is_Active__ = false;
 	var me = this;
 	$(window).on('resize',function() { if(me.__Is_Active__) { me.refreshInstructionBlockPosition(); } });
+	
 };
 
 OverlayInstructions.prototype.ToggleMoreDetail = function (eventData) {
@@ -145,30 +146,31 @@ OverlayInstructions.prototype.ToggleMoreDetail = function (eventData) {
 		//$("#MoreInstructionDetail_" + OverlayInstructionObj.ControlID).css("display","block");
 		//$("#MoreInstructionDetail_" + OverlayInstructionObj.ControlID).hide({duration:"fast",easing:"swing",done:function() { OverlayInstructionObj.refreshInstructionBlockPosition(); }});
 		$("#MoreInstructionDetail_" + OverlayInstructionObj.ControlID).animate({    
-            height: "toggle",
-            opacity: 0
+            height: 0,
+            overflow: "hidden"
         },
         {
-             duration: 500,
+             duration: 300,
              easing: "swing",
              done: function() { 
-             	          OverlayInstructionObj.refreshInstructionBlockPosition(); 
-             	      }
+             	 OverlayInstructionObj.refreshInstructionBlockPosition(); 
+             	$("#MoreInstructionDetail_" + OverlayInstructionObj.ControlID).css("display","none");
+             }
          });
 	} else {
 		$("#MoreDetailButton_" + OverlayInstructionObj.ControlID).text("less...");
-		//$("#MoreInstructionDetail_" + OverlayInstructionObj.ControlID).css("display","block");
+		$("#MoreInstructionDetail_" + OverlayInstructionObj.ControlID).css("display","block");
 		//$("#MoreInstructionDetail_" + OverlayInstructionObj.ControlID).show({duration:"fast",easing:"swing",done:function() { OverlayInstructionObj.refreshInstructionBlockPosition(); }});
 		$("#MoreInstructionDetail_" + OverlayInstructionObj.ControlID).animate({    
-            height: "toggle",
-            opacity: 1
+            height: 200,
+            overflow : "scroll"
         },
         {
-             duration: 500,
+             duration: 300,
              easing: "swing",
              done: function() { 
-             	          OverlayInstructionObj.refreshInstructionBlockPosition(); 
-             	      }
+             	          OverlayInstructionObj.refreshInstructionBlockPosition();
+             	          }
          });
 	}
 	//OverlayInstructionObj.refreshInstructionBlockPosition();
@@ -843,7 +845,7 @@ OverlayInstructions.prototype.createInstructionBlockElement = function () {
 	if (this.InstructionDetailsText) {
 		var MoreButton = $('<br/><a class="MoreDetailButton" id="MoreDetailButton_' + this.ControlID + '" href="#" title="Click to expand & collapse">more...</a>');
 		var MoreDetailsText = $('<div class="InstructionDetailText" id="InstructionDetailText_' + this.ControlID + '">' + this.InstructionDetailsText + '</div>');
-		var MoreTextBlock = $('<div class="MoreInstructionDetail" id="MoreInstructionDetail_' + this.ControlID + '" style="display:none"></div>');
+		var MoreTextBlock = $('<div class="MoreInstructionDetail" id="MoreInstructionDetail_' + this.ControlID + '" style="height:0px; display:none"></div>');
 		InstructionContent.append(MoreButton);
 		MoreTextBlock.append(MoreDetailsText);
 		InstructionContent.append(MoreTextBlock);

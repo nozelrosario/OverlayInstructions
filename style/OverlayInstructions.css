@@ -43,6 +43,10 @@
     font-size: 1em;
 }
 
+.InstructionBlock .InstructionDetail {
+    max-height: 200px;
+}
+
 .InstructionBlock .InstructionOKButton {
 	z-index:100012;
 }
