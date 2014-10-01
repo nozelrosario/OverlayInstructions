@@ -163,13 +163,18 @@ OverlayInstructions constructor supports multiple config.  options, Following is
 | onOkClick | Triggered when "OK" button is clicked on OverlayInstruction Widget | 
 
 
+Recent Release includes
+-------------------------
++ Code Re-Factoring [optimize]
++ Transition Animations
++ Mobile/Touch Friendly  UI
++ Few Bug fixes
+
+
 What's Comming Next
 -------------------------
 + More simple Jquery style syntax. Eg. &lt;button id="Save" O-InstructionText="Saves your file".....
-+ Code Re-Factoring [optimize]
 + More Themes
-+ Transition Animations
-+ Mobile/Touch Friendly  UI
 + etc.....
 
 ## License
