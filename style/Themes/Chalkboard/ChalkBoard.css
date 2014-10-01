@@ -5,6 +5,7 @@
 
 .InstructionBlock.ChalkBoard {
     font-family: 'ChalkFont', Fallback, cursive;
+    font-size: 1em;
 }
 
 .InstructionBlock.ChalkBoard .ArrowImage_NW {

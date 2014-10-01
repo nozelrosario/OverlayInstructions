@@ -146,15 +146,15 @@ OverlayInstructions.prototype.ToggleMoreDetail = function (eventData) {
 		//$("#MoreInstructionDetail_" + OverlayInstructionObj.ControlID).css("display","block");
 		//$("#MoreInstructionDetail_" + OverlayInstructionObj.ControlID).hide({duration:"fast",easing:"swing",done:function() { OverlayInstructionObj.refreshInstructionBlockPosition(); }});
 		$("#MoreInstructionDetail_" + OverlayInstructionObj.ControlID).animate({    
-            height: 0,
+            height: "0px",
             overflow: "hidden"
         },
         {
              duration: 300,
              easing: "swing",
-             done: function() { 
-             	 OverlayInstructionObj.refreshInstructionBlockPosition(); 
+             done: function() {              	  
              	$("#MoreInstructionDetail_" + OverlayInstructionObj.ControlID).css("display","none");
+             	OverlayInstructionObj.refreshInstructionBlockPosition();
              }
          });
 	} else {
@@ -162,7 +162,7 @@ OverlayInstructions.prototype.ToggleMoreDetail = function (eventData) {
 		$("#MoreInstructionDetail_" + OverlayInstructionObj.ControlID).css("display","block");
 		//$("#MoreInstructionDetail_" + OverlayInstructionObj.ControlID).show({duration:"fast",easing:"swing",done:function() { OverlayInstructionObj.refreshInstructionBlockPosition(); }});
 		$("#MoreInstructionDetail_" + OverlayInstructionObj.ControlID).animate({    
-            height: 200,
+            height: "100px",
             overflow : "scroll"
         },
         {
@@ -173,7 +173,7 @@ OverlayInstructions.prototype.ToggleMoreDetail = function (eventData) {
              	          }
          });
 	}
-	//OverlayInstructionObj.refreshInstructionBlockPosition();
+	return false; // To prevent reset of scroll position on link click
 };
 
 OverlayInstructions.prototype.OnInstructionOKButtonClick = function (eventData) {
@@ -656,14 +656,14 @@ OverlayInstructions.prototype.show = function (_Is_Rendered_Within_Tour_) {
 OverlayInstructions.prototype.scrollToInstruction = function() {
 	var instructionBlockID = this.getID();
     topPadding = 100;
-	var currentScrollPosition = $(document).scrollTop();
+	var currentScrollPosition = $("#InstructionBlock_" + instructionBlockID).scrollTop(); // $(document).scrollTop();
     var moveTo = $("#InstructionBlock_" + instructionBlockID).offset().top - topPadding;
 	//alert("currentScrollPosition=" + currentScrollPosition + "  moveTo=" + moveTo + "   (currentScrollPosition + topPadding) = " + (currentScrollPosition + topPadding));
 	//if(moveTo > (currentScrollPosition + topPadding)) {
 		$('html, body').stop().animate({
 		    scrollTop: moveTo
 		    },1000);
-   // }
+    //}
 };
 
 OverlayInstructions.prototype.destroy = function () {

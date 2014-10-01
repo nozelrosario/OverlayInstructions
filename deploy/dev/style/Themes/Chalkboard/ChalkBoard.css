@@ -1,3 +1,12 @@
+@font-face {
+  font-family: 'ChalkFont';
+  src: url('Font/ChalkFont.ttf') format('truetype'); /* Chrome 4+, Firefox 3.5, Opera 10+, Safari 3—5 */
+}
+
+.InstructionBlock.ChalkBoard {
+    font-family: 'ChalkFont', Fallback, cursive;
+    font-size: 1em;
+}
 
 .InstructionBlock.ChalkBoard .ArrowImage_NW {
 	background-image: url('Images/arrows/arrow-NW.png');
@@ -5,22 +14,27 @@
 
 .InstructionBlock.ChalkBoard .ArrowImage_N {
 	background-image: url('Images/arrows/arrow-N.png');
+	background-position: 20%;	
 }
 
 .InstructionBlock.ChalkBoard .ArrowImage_NE {
 	background-image: url('Images/arrows/arrow-NE.png');
+	background-position-x: 100%;
 }
 
 .InstructionBlock.ChalkBoard .ArrowImage_E {
 	background-image: url('Images/arrows/arrow-E.png');
+	background-position: 50%;
 }
 
 .InstructionBlock.ChalkBoard .ArrowImage_SE {
 	background-image: url('Images/arrows/arrow-SE.png');
+	background-position-x: 100%;
 }
 
 .InstructionBlock.ChalkBoard .ArrowImage_S {
 	background-image: url('Images/arrows/arrow-S.png');
+	background-position: 20%;
 }
 
 .InstructionBlock.ChalkBoard .ArrowImage_SW {
@@ -29,6 +43,7 @@
 
 .InstructionBlock.ChalkBoard .ArrowImage_W {
 	background-image: url('Images/arrows/arrow-W.png');
+	background-position: 50%;	
 }
 
 .InstructionBlock.ChalkBoard .ArrowImage 
@@ -45,10 +60,16 @@ background-repeat: no-repeat;
 float:left;
 margin-left:10px;
 color:white; 
-font-family:cursive;
-font-size: 23px;
+/*font-family:cursive;
+font-size: 23px;*/
 line-height: 23px;
 }
+
+.InstructionBlock.ChalkBoard .InstructionOKButton:active  {
+  -webkit-animation: buttonBlast .5s;
+  animation: buttonBlast .5s;
+}
+
 
 .InstructionBlock.ChalkBoard .InstructionOKButton {
 margin:15px 0px 15px 15px;
@@ -65,7 +86,7 @@ background: -webkit-linear-gradient(top,#4387fd,#4683ea);
 background: linear-gradient(top,#4387fd,#4683ea);
 filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#4387fd,endColorstr=#4683ea,GradientType=0);
 color: #fff;
-float: right;
+float: left;
 clear: left;
 cursor: pointer;
 }
@@ -74,10 +95,10 @@ cursor: pointer;
 .InstructionBlock.ChalkBoard .InstructionDetailText {
 float:left;
 margin-left:10px;
-color:white; 
-font-family:cursive;
+color:rgb(252, 243, 148); 
+/*font-family:cursive;
 font-size: 17px;
-line-height: 17px;
+line-height: 17px;*/
 }
 
 .InstructionBlock.ChalkBoard .MoreDetailButton, .InstructionBlock.ChalkBoard .MoreDetailButton:visited {
@@ -107,15 +128,72 @@ color: lightblue;
 	margin-bottom:10px;
 	cursor: pointer;
 	color:white;
+	-webkit-transition: all .5s;
+	transition: all .5s;
 }
 
 .PageTourNavigationButtons.ChalkBoard .PageTourNavigationButton:hover {
-	background-size: 50px 50px;
+    
+    -webkit-animation: buttonBlast .5s; /* Chrome, Safari, Opera */
+    animation: buttonBlast .5s;
+    animation-delay: 0s;
+    -webkit-animation-delay: 0s;
+} 
+
+
+/* Chrome, Safari, Opera */
+@-webkit-keyframes buttonBlast {
+    0% {   
+    	     -webkit-transform: scale(1, 1);
+             -moz-transform: scale(1, 1);
+             transform: scale(1, 1);
+         }
+    50%  {   
+    	     -webkit-transform: scale(2, 2);
+             -moz-transform: scale(2, 2);
+             transform: scale(2, 2);
+         }
+         
+   70%   {
+   	         opacity:0;
+         }
+   100%  {   
+    	     -webkit-transform: scale(1, 1);
+             -moz-transform: scale(1, 1);
+             transform: scale(1, 1);
+         }
+}
+
+/* Standard syntax */
+@keyframes buttonBlast {
+    from {   
+    	     -webkit-transform: scale(2, 2);
+             -moz-transform: scale(2, 2);
+             transform: scale(2, 2);
+         }
+    to   {   
+    	     -webkit-transform: scale(2, 2);
+             -moz-transform: scale(2, 2);
+             transform: scale(2, 2);
+         }
+}
+
+@keyframes  buzz-out {
+  /*
+   * Strange...this take same animation as buttonBlast for some reason :(
+   *//*display: inline-block;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0);*/
 }
 
 .PageTourNavigationButtons.ChalkBoard .PageTourNavigationButton:active  {
-	background-size: 40px 40px;
+  -webkit-animation: buzz-out .5s;
+  animation: buzz-out .5s;
+
 }
+
+
 
 .PageTourNavigationButtons.ChalkBoard .PageTourPlayButton {
 	background-image: url('Images/buttons/play.png');

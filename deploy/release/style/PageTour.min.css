@@ -1,4 +1,4 @@
-/*! PageTour - v0.0.1 - 2014-05-20 
+/*! PageTour - v0.0.1 - 2014-10-01 
 
  * https://github.com/nozelrosario/OverlayInstructions 
  *
@@ -8,4 +8,4 @@
  *
  */ 
 
-div.PageTourOverlay{position:absolute;top:0;left:0;background:rgba(0,0,0,.5);z-index:99999}.PageTourNavigationButtons{z-index:100000!important;height:50px}.PageTourNavigationButtons .disabled{opacity:.3;-webkit-opacity:.3;-moz-opacity:.3;-ms-opacity:.3;-o-opacity:.3;-ms-filter:"alpha(Opacity=30)";filter:alpha(opacity=30);pointer-events:none}
+div.PageTourOverlay{position:absolute;top:0;left:0;background:rgba(0,0,0,.5);z-index:99999}.PageTourNavigationButtons{z-index:1000000!important;height:50px}.PageTourNavigationButtons .disabled{opacity:.3;-webkit-opacity:.3;-moz-opacity:.3;-ms-opacity:.3;-o-opacity:.3;-ms-filter:"alpha(Opacity=30)";filter:alpha(opacity=30);pointer-events:none}
