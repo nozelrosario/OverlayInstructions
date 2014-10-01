@@ -6,8 +6,9 @@ Page Tour is a small (~200K) JQuery based library for showing help/instructions 
 
 
 
-ScreenShot  [Might take a while to load. ~ 9Mb Gif :)]
+ScreenShot  
 -------------------------
+####[ Might take a while to load. ~ 9Mb Gif :) ]
 A picture = 1000 words :-)
 <img src="https://github.com/nozelrosario/OverlayInstructions/blob/master/Demo/screenshot.gif?raw=true" />
 
