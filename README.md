@@ -10,7 +10,7 @@ ScreenShot
 -------------------------
 ####[ Might take a while to load. ~ 9Mb Gif :) ]
 A picture = 1000 words :-)
-<img src="https://github.com/nozelrosario/OverlayInstructions/blob/master/Demo/screenshot.gif?raw=true" />
+<img src="https://github.com/nozelrosario/OverlayInstructions/blob/v0.0.2/Demo/screenshot.gif?raw=true" />
 
 
 
@@ -62,7 +62,7 @@ Then to apply Overlay Instructions to these elements you have to do following :
 ```
 This will show the PageTour overlay on screen along with "Stop" - "Play" - "Next" - "Previous" navigation buttons at bottom of page.
 
-<img src="https://github.com/nozelrosario/OverlayInstructions/blob/master/Demo/screenshot2.png?raw=true" />
+<img src="https://github.com/nozelrosario/OverlayInstructions/blob/v0.0.2/Demo/screenshot2.png?raw=true" />
 
 ###Methods provided by PageTour
 | Method_Name(Arguments)   | Return Type  | Description
@@ -85,7 +85,7 @@ This will show the PageTour overlay on screen along with "Stop" - "Play" - "Next
 -------------------
 Is is also possible to show a standalone Overlay Instruction independent of the PageTour. Following section will guide you through.
 For Eg.
-<img src="https://github.com/nozelrosario/OverlayInstructions/blob/master/Demo/screenshot1.png?raw=true" /> 
+<img src="https://github.com/nozelrosario/OverlayInstructions/blob/v0.0.2/Demo/screenshot1.png?raw=true" /> 
 How to use OverlayInstructions
 ------------------------
 ###Getting started
