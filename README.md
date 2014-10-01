@@ -9,7 +9,7 @@ Page Tour is a small (~200K) JQuery based library for showing help/instructions 
 ScreenShot 
 -------------------------
 A picture = 1000 words :-)
-<img src="https://github.com/nozelrosario/OverlayInstructions/blob/master/Demo/screenshot.gif?raw=true" />
+<img src="https://github.com/nozelrosario/OverlayInstructions/blob/v0.0.1/Demo/screenshot.gif?raw=true" />
 
 
 
@@ -53,7 +53,7 @@ You can create multiple page tours with Same set of OverlayInstruction Widgets.
 ```
 This will show the PageTour overlay on screen along with "Stop" - "Play" - "Next" - "Previous" navigation buttons at bottom of page.
 
-<img src="https://github.com/nozelrosario/OverlayInstructions/blob/master/Demo/screenshot2.png?raw=true" />
+<img src="https://github.com/nozelrosario/OverlayInstructions/blob/v0.0.1/Demo/screenshot2.png?raw=true" />
 
 ###Methods provided by PageTour
 | Method_Name(Arguments)   | Return Type  | Description
@@ -76,7 +76,7 @@ This will show the PageTour overlay on screen along with "Stop" - "Play" - "Next
 -------------------
 Is is also possible to show a standalone Overlay Instruction independent of the PageTour. Following section will guide you through.
 For Eg.
-<img src="https://github.com/nozelrosario/OverlayInstructions/blob/master/Demo/screenshot1.png?raw=true" /> 
+<img src="https://github.com/nozelrosario/OverlayInstructions/blob/v0.0.1/Demo/screenshot1.png?raw=true" /> 
 How to use OverlayInstructions
 ------------------------
 ###Getting started
