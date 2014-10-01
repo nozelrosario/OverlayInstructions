@@ -109,6 +109,12 @@ If you are interested in customizing the styles/images of your Instructions you 
 	                                               targetID:"Help_Menu_link",
 	                                               expandDetails:true});
 ```
+Also this overlayInstruction can be reused for a Page tour as well. For Eg.
+```Javascript
+   var PageTourOnChalkboard = new PageTour("PageTour_On_ChalkBoard");
+   PageTourOnChalkboard.addInstruction(help_indicator);
+
+```
 
 ###Config Params<a name="InstructionParams"></a>
 OverlayInstructions constructor supports multiple config.  options, Following is the listing :
